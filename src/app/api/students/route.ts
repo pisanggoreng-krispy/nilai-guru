@@ -22,11 +22,17 @@ export async function GET(request: NextRequest) {
     // Get classes for mapping
     const { data: classes } = await supabase.from('classes').select('*');
 
-    const studentsWithClass = students.map(s => ({
-      ...s,
-      nis: s.nisn, // Map nisn to nis for frontend compatibility
-      class: classes?.find(c => c.id === s.classId),
-    }));
+    const studentsWithClass = students.map(s => {
+      const classData = classes?.find(c => c.id === s.classId);
+      return {
+        ...s,
+        nis: s.nisn, // Map nisn to nis for frontend compatibility
+        class: classData ? {
+          ...classData,
+          jenjang: classData.level,
+        } : undefined,
+      };
+    });
 
     return NextResponse.json({ success: true, data: studentsWithClass });
   } catch (error) {
