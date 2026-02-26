@@ -41,13 +41,23 @@ export async function POST(request: NextRequest) {
     }
 
     const decoded = verify(token, JWT_SECRET) as { userId: string; role: string };
-    if (decoded.role !== 'ADMIN') {
-      return NextResponse.json({ success: false, error: 'Hanya admin yang dapat mengimpor data' }, { status: 403 });
-    }
 
     const formData = await request.formData();
     const file = formData.get('file') as File;
     const type = formData.get('type') as string;
+
+    // Permission check based on import type
+    if (type === 'grades') {
+      // Admin and Guru Mapel can import grades
+      if (decoded.role !== 'ADMIN' && decoded.role !== 'GURU_MAPEL') {
+        return NextResponse.json({ success: false, error: 'Tidak memiliki akses untuk import nilai' }, { status: 403 });
+      }
+    } else {
+      // Only Admin can import students, teachers, subjects
+      if (decoded.role !== 'ADMIN') {
+        return NextResponse.json({ success: false, error: 'Hanya admin yang dapat mengimpor data' }, { status: 403 });
+      }
+    }
 
     if (!file) {
       return NextResponse.json({ success: false, error: 'File tidak ditemukan' }, { status: 400 });
