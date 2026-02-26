@@ -1,23 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/jsondb';
-import { verify } from 'jsonwebtoken';
+import { supabase } from '@/lib/supabase';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-
-// Get all classes or filter by jenjang
+// Get all classes or filter by level
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const jenjang = searchParams.get('jenjang') as 'SMP' | 'MA' | null;
     
-    const classes = jenjang ? db.getClassesByJenjang(jenjang) : db.getClasses();
-    const students = db.getStudents();
-    const users = db.getUsers();
+    let query = supabase.from('classes').select('*');
+    
+    if (jenjang) {
+      query = query.eq('level', jenjang);
+    }
+
+    const { data: classes, error } = await query.order('name');
+    if (error) throw error;
+
+    // Get students count for each class
+    const { data: students } = await supabase.from('students').select('classId');
+    const { data: users } = await supabase.from('users').select('id, name');
 
     const classesWithDetails = classes.map(c => ({
       ...c,
-      waliKelas: users.find(u => u.id === c.waliKelasId)?.name || null,
-      studentCount: students.filter(s => s.classId === c.id).length,
+      jenjang: c.level,
+      waliKelas: users?.find(u => u.id === c.waliKelasId)?.name || null,
+      studentCount: students?.filter(s => s.classId === c.id).length || 0,
     }));
 
     return NextResponse.json({ success: true, data: classesWithDetails });

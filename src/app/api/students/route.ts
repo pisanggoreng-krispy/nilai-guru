@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/jsondb';
+import { supabase, generateId } from '@/lib/supabase';
 import { verify } from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
@@ -10,12 +10,22 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const classId = searchParams.get('classId');
     
-    const students = classId ? db.getStudentsByClass(classId) : db.getStudents();
-    const classes = db.getClasses();
+    let query = supabase.from('students').select('*');
+    
+    if (classId) {
+      query = query.eq('classId', classId);
+    }
+
+    const { data: students, error } = await query.order('name');
+    if (error) throw error;
+
+    // Get classes for mapping
+    const { data: classes } = await supabase.from('classes').select('*');
 
     const studentsWithClass = students.map(s => ({
       ...s,
-      class: classes.find(c => c.id === s.classId),
+      nis: s.nisn, // Map nisn to nis for frontend compatibility
+      class: classes?.find(c => c.id === s.classId),
     }));
 
     return NextResponse.json({ success: true, data: studentsWithClass });
@@ -48,7 +58,32 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Format data tidak valid' }, { status: 400 });
     }
 
-    const count = db.importStudents(students);
+    // Get classes for mapping
+    const { data: classes } = await supabase.from('classes').select('*');
+    const { data: existingStudents } = await supabase.from('students').select('nisn');
+
+    let count = 0;
+    for (const student of students) {
+      const { nis, name, classId, gender } = student;
+      
+      // Check if NISN already exists
+      if (existingStudents?.some(s => s.nisn === String(nis))) {
+        continue;
+      }
+
+      const id = generateId('std-');
+      const { error } = await supabase
+        .from('students')
+        .insert({
+          id,
+          name,
+          nisn: String(nis),
+          classId,
+          gender: gender || null,
+        });
+
+      if (!error) count++;
+    }
 
     return NextResponse.json({ 
       success: true, 

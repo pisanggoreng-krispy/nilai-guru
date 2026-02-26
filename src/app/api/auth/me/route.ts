@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/jsondb';
+import { supabase } from '@/lib/supabase';
 import { verify } from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
@@ -16,9 +16,15 @@ export async function GET(request: NextRequest) {
     }
 
     const decoded = verify(token, JWT_SECRET) as { userId: string; email: string; role: string };
-    const user = db.getUserById(decoded.userId);
 
-    if (!user) {
+    // Query user from Supabase
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', decoded.userId)
+      .single();
+
+    if (error || !user) {
       return NextResponse.json(
         { success: false, error: 'User tidak ditemukan' },
         { status: 404 }

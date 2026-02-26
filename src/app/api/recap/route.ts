@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/jsondb';
+import { supabase } from '@/lib/supabase';
 import { verify } from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
@@ -13,7 +13,13 @@ export async function GET(request: NextRequest) {
     }
 
     const decoded = verify(token, JWT_SECRET) as { userId: string; role: string };
-    const user = db.getUserById(decoded.userId);
+    
+    // Get user
+    const { data: user } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', decoded.userId)
+      .single();
 
     if (!user) {
       return NextResponse.json({ success: false, error: 'User tidak ditemukan' }, { status: 404 });
@@ -22,10 +28,13 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const classId = searchParams.get('classId');
 
+    // Get all classes
+    const { data: classes } = await supabase.from('classes').select('*');
+
     // Get class
-    const targetClass = classId 
-      ? db.getClassById(classId)
-      : db.getClasses().find(c => c.waliKelasId === user.id);
+    let targetClass = classId 
+      ? classes?.find(c => c.id === classId)
+      : classes?.find(c => c.waliKelasId === user.id);
 
     if (!targetClass) {
       return NextResponse.json({ success: false, error: 'Kelas tidak ditemukan' }, { status: 404 });
@@ -37,18 +46,28 @@ export async function GET(request: NextRequest) {
     }
 
     // Get students in this class
-    const students = db.getStudentsByClass(targetClass.id);
+    const { data: students } = await supabase
+      .from('students')
+      .select('*')
+      .eq('classId', targetClass.id);
     
-    // Get subjects for this jenjang
-    const subjects = db.getSubjectsByJenjang(targetClass.jenjang);
+    // Get subjects for this level
+    const { data: subjects } = await supabase
+      .from('subjects')
+      .select('*')
+      .eq('level', targetClass.level);
     
-    // Get grades for this class
-    const grades = db.getGradesByClass(targetClass.id);
-    const users = db.getUsers();
+    // Get all grades
+    const { data: grades } = await supabase.from('grades').select('*');
+    const { data: users } = await supabase.from('users').select('*');
+
+    // Filter grades for students in this class
+    const studentIds = students?.map(s => s.id) || [];
+    const classGrades = grades?.filter(g => studentIds.includes(g.studentId)) || [];
 
     // Build recap data
-    const recap = students.map(student => {
-      const studentGrades = grades.filter(g => g.studentId === student.id);
+    const recap = (students || []).map(student => {
+      const studentGrades = classGrades.filter(g => g.studentId === student.id);
       
       const subjectGrades: Record<string, { 
         tugas1: number | null; 
@@ -60,7 +79,7 @@ export async function GET(request: NextRequest) {
         finalGrade: number | null;
       }> = {};
 
-      for (const subject of subjects) {
+      for (const subject of (subjects || [])) {
         const grade = studentGrades.find(g => g.subjectId === subject.id);
         subjectGrades[subject.id] = {
           tugas1: grade?.tugas1 ?? null,
@@ -68,7 +87,7 @@ export async function GET(request: NextRequest) {
           ulangan1: grade?.ulangan1 ?? null,
           ulangan2: grade?.ulangan2 ?? null,
           midTest: grade?.midTest ?? null,
-          uas: grade?.uas ?? null,
+          uas: grade?.finalTest ?? null,
           finalGrade: grade?.finalGrade ?? null,
         };
       }
@@ -80,7 +99,7 @@ export async function GET(request: NextRequest) {
         : null;
 
       return {
-        student,
+        student: { ...student, nis: student.nisn },
         subjectGrades,
         average,
       };
@@ -116,7 +135,7 @@ export async function GET(request: NextRequest) {
       average: averages.length > 0 
         ? Math.round((averages.reduce((a, b) => a + b, 0) / averages.length) * 100) / 100 
         : null,
-      totalStudents: students.length,
+      totalStudents: students?.length || 0,
       gradedStudents: averages.length,
     };
 
@@ -142,9 +161,10 @@ export async function GET(request: NextRequest) {
       data: {
         class: {
           ...targetClass,
-          waliKelas: users.find(u => u.id === targetClass.waliKelasId)?.name || null,
+          jenjang: targetClass.level,
+          waliKelas: users?.find(u => u.id === targetClass.waliKelasId)?.name || null,
         },
-        subjects,
+        subjects: subjects?.map(s => ({ ...s, jenjang: s.level })) || [],
         recap,
         statistics: classStats,
         distribution,

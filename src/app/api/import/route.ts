@@ -1,9 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/jsondb';
+import { supabase, generateId } from '@/lib/supabase';
 import { verify } from 'jsonwebtoken';
 import * as XLSX from 'xlsx';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+
+// Helper to calculate final grade
+function calculateFinalGrade(
+  tugas1: number | null,
+  tugas2: number | null,
+  ulangan1: number | null,
+  ulangan2: number | null,
+  midTest: number | null,
+  finalTest: number | null
+): number | null {
+  const values = [tugas1, tugas2, ulangan1, ulangan2, midTest, finalTest];
+  const weights = [0.05, 0.05, 0.10, 0.10, 0.30, 0.40];
+  
+  let totalWeight = 0;
+  let weightedSum = 0;
+
+  for (let i = 0; i < values.length; i++) {
+    if (values[i] !== null && values[i] !== undefined) {
+      weightedSum += values[i] * weights[i];
+      totalWeight += weights[i];
+    }
+  }
+
+  if (totalWeight === 0) return null;
+  
+  return Math.round((weightedSum / totalWeight) * 100) / 100;
+}
 
 // Import data from Excel
 export async function POST(request: NextRequest) {
@@ -20,7 +47,7 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const file = formData.get('file') as File;
-    const type = formData.get('type') as string; // students, grades
+    const type = formData.get('type') as string;
 
     if (!file) {
       return NextResponse.json({ success: false, error: 'File tidak ditemukan' }, { status: 400 });
@@ -33,8 +60,9 @@ export async function POST(request: NextRequest) {
     const data = XLSX.utils.sheet_to_json(sheet);
 
     if (type === 'students') {
-      // Import students
-      const classes = db.getClasses();
+      const { data: classes } = await supabase.from('classes').select('*');
+      const { data: existingStudents } = await supabase.from('students').select('nisn');
+      
       let imported = 0;
       let skipped = 0;
 
@@ -49,26 +77,32 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        // Find class
-        const kelas = classes.find(c => c.jenjang === jenjang && c.name === kelasName);
+        const kelas = classes?.find(c => c.level === jenjang && c.name === kelasName);
         if (!kelas) {
           skipped++;
           continue;
         }
 
-        // Check if NIS already exists
-        const existing = db.getStudents().find(s => s.nis === nis);
-        if (existing) {
+        if (existingStudents?.some(s => s.nisn === String(nis))) {
           skipped++;
           continue;
         }
 
-        db.createStudent({
-          nis: String(nis),
-          name: String(name),
-          classId: kelas.id,
-        });
-        imported++;
+        const id = generateId('std-');
+        const { error } = await supabase
+          .from('students')
+          .insert({
+            id,
+            nisn: String(nis),
+            name: String(name),
+            classId: kelas.id,
+          });
+
+        if (error) {
+          skipped++;
+        } else {
+          imported++;
+        }
       }
 
       return NextResponse.json({
@@ -80,7 +114,6 @@ export async function POST(request: NextRequest) {
     }
 
     if (type === 'grades') {
-      // Import grades - more complex, needs class and subject mapping
       const classId = formData.get('classId') as string;
       const subjectId = formData.get('subjectId') as string;
 
@@ -91,28 +124,30 @@ export async function POST(request: NextRequest) {
         }, { status: 400 });
       }
 
-      const students = db.getStudentsByClass(classId);
+      const { data: students } = await supabase
+        .from('students')
+        .select('*')
+        .eq('classId', classId);
+
       let imported = 0;
       let skipped = 0;
 
       for (const row of data as any[]) {
         const nis = row['NIS'] || row['nis'];
-        const name = row['Nama'] || row['nama'] || row['Name'];
         const tugas1 = row['Tugas 1'] ?? row['tugas1'] ?? null;
         const tugas2 = row['Tugas 2'] ?? row['tugas2'] ?? null;
         const ulangan1 = row['Ulangan 1'] ?? row['ulangan1'] ?? null;
-        const ulangan2 = row['Ulangan 2'] ?? row['ulangan2'] ?? null;
+        const ulangan2 = row['Ulongan 2'] ?? row['ulangan2'] ?? null;
         const midTest = row['Mid Test'] ?? row['midTest'] ?? row['Mid'] ?? null;
         const uas = row['UAS'] ?? row['uas'] ?? null;
 
-        // Find student by NIS
-        const student = students.find(s => s.nis === nis);
+        const student = students?.find(s => s.nisn === String(nis));
         if (!student) {
           skipped++;
           continue;
         }
 
-        const finalGrade = db.calculateFinalGrade(
+        const finalGrade = calculateFinalGrade(
           tugas1 ? Number(tugas1) : null,
           tugas2 ? Number(tugas2) : null,
           ulangan1 ? Number(ulangan1) : null,
@@ -121,20 +156,55 @@ export async function POST(request: NextRequest) {
           uas ? Number(uas) : null
         );
 
-        db.upsertGrade(student.id, subjectId, {
-          teacherId: decoded.userId,
-          classId,
-          semester: '1',
-          tahunAjaran: '2024/2025',
-          tugas1: tugas1 ? Number(tugas1) : null,
-          tugas2: tugas2 ? Number(tugas2) : null,
-          ulangan1: ulangan1 ? Number(ulangan1) : null,
-          ulangan2: ulangan2 ? Number(ulangan2) : null,
-          midTest: midTest ? Number(midTest) : null,
-          uas: uas ? Number(uas) : null,
-          finalGrade,
-        });
-        imported++;
+        // Check if grade exists
+        const { data: existing } = await supabase
+          .from('grades')
+          .select('id')
+          .eq('studentId', student.id)
+          .eq('subjectId', subjectId)
+          .eq('academicYear', '2024/2025')
+          .eq('semester', 1)
+          .single();
+
+        if (existing) {
+          const { error } = await supabase
+            .from('grades')
+            .update({
+              tugas1: tugas1 ? Number(tugas1) : null,
+              tugas2: tugas2 ? Number(tugas2) : null,
+              ulangan1: ulangan1 ? Number(ulangan1) : null,
+              ulangan2: ulangan2 ? Number(ulangan2) : null,
+              midTest: midTest ? Number(midTest) : null,
+              finalTest: uas ? Number(uas) : null,
+              finalGrade,
+              updatedAt: new Date().toISOString(),
+            })
+            .eq('id', existing.id);
+
+          if (error) skipped++;
+          else imported++;
+        } else {
+          const id = generateId('grade-');
+          const { error } = await supabase
+            .from('grades')
+            .insert({
+              id,
+              studentId: student.id,
+              subjectId,
+              tugas1: tugas1 ? Number(tugas1) : null,
+              tugas2: tugas2 ? Number(tugas2) : null,
+              ulangan1: ulangan1 ? Number(ulangan1) : null,
+              ulangan2: ulangan2 ? Number(ulangan2) : null,
+              midTest: midTest ? Number(midTest) : null,
+              finalTest: uas ? Number(uas) : null,
+              finalGrade,
+              academicYear: '2024/2025',
+              semester: 1,
+            });
+
+          if (error) skipped++;
+          else imported++;
+        }
       }
 
       return NextResponse.json({
@@ -146,11 +216,12 @@ export async function POST(request: NextRequest) {
     }
 
     if (type === 'teachers') {
-      // Import teachers/guru
       const bcrypt = await import('bcryptjs');
       const hashedPassword = await bcrypt.hash('password123', 10);
       let imported = 0;
       let skipped = 0;
+
+      const { data: existingUsers } = await supabase.from('users').select('email');
 
       for (const row of data as any[]) {
         const name = row['Nama'] || row['nama'] || row['Name'];
@@ -162,25 +233,28 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        // Validate role
         const validRoles = ['ADMIN', 'GURU_MAPEL', 'WALI_KELAS'];
         const roleUpper = String(role).toUpperCase().replace(' ', '_');
         const finalRole = validRoles.includes(roleUpper) ? roleUpper : 'GURU_MAPEL';
 
-        // Check if email already exists
-        const existing = db.getUserByEmail(String(email));
-        if (existing) {
+        if (existingUsers?.some(u => u.email === String(email))) {
           skipped++;
           continue;
         }
 
-        db.createUser({
-          name: String(name),
-          email: String(email),
-          password: hashedPassword,
-          role: finalRole as 'ADMIN' | 'GURU_MAPEL' | 'WALI_KELAS',
-        });
-        imported++;
+        const id = generateId('user-');
+        const { error } = await supabase
+          .from('users')
+          .insert({
+            id,
+            name: String(name),
+            email: String(email),
+            password: hashedPassword,
+            role: finalRole as 'ADMIN' | 'GURU_MAPEL' | 'WALI_KELAS',
+          });
+
+        if (error) skipped++;
+        else imported++;
       }
 
       return NextResponse.json({
@@ -192,9 +266,10 @@ export async function POST(request: NextRequest) {
     }
 
     if (type === 'subjects') {
-      // Import mata pelajaran
       let imported = 0;
       let skipped = 0;
+
+      const { data: existingSubjects } = await supabase.from('subjects').select('name, level');
 
       for (const row of data as any[]) {
         const name = row['Nama'] || row['nama'] || row['Name'] || row['Mata Pelajaran'];
@@ -205,27 +280,33 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        // Validate jenjang
         const jenjangUpper = String(jenjang).toUpperCase();
         if (!['SMP', 'MA'].includes(jenjangUpper)) {
           skipped++;
           continue;
         }
 
-        // Check if subject already exists
-        const existing = db.getSubjects().find(s => 
-          s.name.toLowerCase() === String(name).toLowerCase() && s.jenjang === jenjangUpper
-        );
-        if (existing) {
+        if (existingSubjects?.some(s => 
+          s.name.toLowerCase() === String(name).toLowerCase() && s.level === jenjangUpper
+        )) {
           skipped++;
           continue;
         }
 
-        db.createSubject({
-          name: String(name),
-          jenjang: jenjangUpper as 'SMP' | 'MA',
-        });
-        imported++;
+        const id = generateId('sub-');
+        const code = `${String(name).substring(0, 3).toUpperCase()}-${jenjangUpper}`;
+
+        const { error } = await supabase
+          .from('subjects')
+          .insert({
+            id,
+            name: String(name),
+            code,
+            level: jenjangUpper as 'SMP' | 'MA',
+          });
+
+        if (error) skipped++;
+        else imported++;
       }
 
       return NextResponse.json({

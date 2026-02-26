@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/jsondb';
+import { supabase, generateId } from '@/lib/supabase';
 import { verify } from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
@@ -15,9 +15,22 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const jenjang = searchParams.get('jenjang');
     
-    const subjects = jenjang ? db.getSubjectsByJenjang(jenjang as 'SMP' | 'MA') : db.getSubjects();
+    let query = supabase.from('subjects').select('*');
+    
+    if (jenjang) {
+      query = query.eq('level', jenjang);
+    }
 
-    return NextResponse.json({ success: true, data: subjects });
+    const { data: subjects, error } = await query.order('name');
+    if (error) throw error;
+
+    // Map level to jenjang for frontend compatibility
+    const mappedSubjects = subjects.map(s => ({
+      ...s,
+      jenjang: s.level,
+    }));
+
+    return NextResponse.json({ success: true, data: mappedSubjects });
   } catch (error) {
     console.error('Get subjects error:', error);
     return NextResponse.json(
@@ -47,19 +60,37 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if subject already exists
-    const existing = db.getSubjects().find(s => 
-      s.name.toLowerCase() === name.toLowerCase() && s.jenjang === jenjang
-    );
+    const { data: existing } = await supabase
+      .from('subjects')
+      .select('id')
+      .eq('name', name)
+      .eq('level', jenjang)
+      .single();
+
     if (existing) {
       return NextResponse.json({ success: false, error: 'Mata pelajaran sudah ada' }, { status: 400 });
     }
 
-    const subject = db.createSubject({ name, jenjang });
+    const id = generateId('sub-');
+    const code = `${name.substring(0, 3).toUpperCase()}-${jenjang}`;
+
+    const { data: subject, error } = await supabase
+      .from('subjects')
+      .insert({
+        id,
+        name,
+        code,
+        level: jenjang,
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
 
     return NextResponse.json({ 
       success: true, 
       message: 'Mata pelajaran berhasil ditambahkan',
-      data: subject
+      data: { ...subject, jenjang: subject.level }
     });
   } catch (error) {
     console.error('Create subject error:', error);
@@ -89,11 +120,18 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'ID tidak ditemukan' }, { status: 400 });
     }
 
-    const updateData: Record<string, unknown> = {};
+    const updateData: Record<string, unknown> = { updatedAt: new Date().toISOString() };
     if (name) updateData.name = name;
-    if (jenjang) updateData.jenjang = jenjang;
+    if (jenjang) updateData.level = jenjang;
 
-    const subject = db.updateSubject(id, updateData);
+    const { data: subject, error } = await supabase
+      .from('subjects')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
     if (!subject) {
       return NextResponse.json({ success: false, error: 'Mata pelajaran tidak ditemukan' }, { status: 404 });
     }
@@ -101,7 +139,7 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       message: 'Mata pelajaran berhasil diperbarui',
-      data: subject
+      data: { ...subject, jenjang: subject.level }
     });
   } catch (error) {
     console.error('Update subject error:', error);
@@ -132,10 +170,12 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'ID tidak ditemukan' }, { status: 400 });
     }
 
-    const deleted = db.deleteSubject(id);
-    if (!deleted) {
-      return NextResponse.json({ success: false, error: 'Mata pelajaran tidak ditemukan' }, { status: 404 });
-    }
+    const { error } = await supabase
+      .from('subjects')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
 
     return NextResponse.json({ success: true, message: 'Mata pelajaran berhasil dihapus' });
   } catch (error) {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/jsondb';
+import { supabase, generateId } from '@/lib/supabase';
 import { verify } from 'jsonwebtoken';
 import * as bcrypt from 'bcryptjs';
 
@@ -18,12 +18,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Tidak memiliki akses' }, { status: 403 });
     }
 
-    const users = db.getUsers().map(u => ({
-      id: u.id,
-      name: u.name,
-      email: u.email,
-      role: u.role,
-    }));
+    const { data: users, error } = await supabase
+      .from('users')
+      .select('id, name, email, role, createdAt, updatedAt')
+      .order('name');
+
+    if (error) throw error;
 
     return NextResponse.json({ success: true, data: users });
   } catch (error) {
@@ -55,19 +55,32 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if email already exists
-    const existing = db.getUserByEmail(email);
+    const { data: existing } = await supabase
+      .from('users')
+      .select('id')
+      .eq('email', email)
+      .single();
+
     if (existing) {
       return NextResponse.json({ success: false, error: 'Email sudah terdaftar' }, { status: 400 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const id = generateId('user-');
     
-    const user = db.createUser({
-      name,
-      email,
-      password: hashedPassword,
-      role: role || 'GURU_MAPEL',
-    });
+    const { data: user, error } = await supabase
+      .from('users')
+      .insert({
+        id,
+        name,
+        email,
+        password: hashedPassword,
+        role: role || 'GURU_MAPEL',
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
 
     return NextResponse.json({ 
       success: true, 
@@ -102,7 +115,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'ID tidak ditemukan' }, { status: 400 });
     }
 
-    const updateData: Record<string, unknown> = {};
+    const updateData: Record<string, unknown> = { updatedAt: new Date().toISOString() };
     if (name) updateData.name = name;
     if (email) updateData.email = email;
     if (role) updateData.role = role;
@@ -110,7 +123,14 @@ export async function PUT(request: NextRequest) {
       updateData.password = await bcrypt.hash(password, 10);
     }
 
-    const user = db.updateUser(id, updateData);
+    const { data: user, error } = await supabase
+      .from('users')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
     if (!user) {
       return NextResponse.json({ success: false, error: 'User tidak ditemukan' }, { status: 404 });
     }
@@ -154,10 +174,12 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Tidak dapat menghapus akun sendiri' }, { status: 400 });
     }
 
-    const deleted = db.deleteUser(id);
-    if (!deleted) {
-      return NextResponse.json({ success: false, error: 'User tidak ditemukan' }, { status: 404 });
-    }
+    const { error } = await supabase
+      .from('users')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
 
     return NextResponse.json({ success: true, message: 'Guru berhasil dihapus' });
   } catch (error) {

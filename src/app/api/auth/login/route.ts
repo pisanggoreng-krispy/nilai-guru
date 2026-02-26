@@ -1,15 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/jsondb';
+import { supabase } from '@/lib/supabase';
 import { sign } from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
 export async function POST(request: NextRequest) {
   try {
-    // Initialize database if empty
-    const { initializeDatabase } = await import('@/lib/seed');
-    await initializeDatabase();
-
     const { email, password } = await request.json();
 
     if (!email || !password) {
@@ -19,9 +15,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const user = db.getUserByEmail(email);
+    // Query user from Supabase
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
 
-    if (!user) {
+    if (error || !user) {
       return NextResponse.json(
         { success: false, error: 'Email atau password salah' },
         { status: 401 }
