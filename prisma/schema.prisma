@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Role pengguna
+enum UserRole {
+  ADMIN
+  GURU_MAPEL
+  WALI_KELAS
+}
+
+// Jenjang pendidikan
+enum Jenjang {
+  SMP
+  MA
+}
+
+// Model User (Guru/Admin)
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole @default(GURU_MAPEL)
+  
+  // Relasi
+  classesAsWali    Class[]      @relation("WaliKelas")
+  teacherSubjects  TeacherSubject[]
+  grades           Grade[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Model Kelas
+model Class {
+  id        String   @id @default(cuid())
+  name      String   // Contoh: "7A", "8B", "10A"
+  jenjang   Jenjang
+  grade     Int      // Tingkat: 7, 8, 9 untuk SMP; 10, 11, 12 untuk MA
+  
+  // Relasi
+  waliKelasId  String?
+  waliKelas    User?    @relation("WaliKelas", fields: [waliKelasId], references: [id])
+  students     Student[]
+  grades       Grade[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([jenjang, name])
+}
+
+// Model Mata Pelajaran
+model Subject {
+  id        String   @id @default(cuid())
+  name      String
+  jenjang   Jenjang
+  
+  // Relasi
+  teacherSubjects  TeacherSubject[]
+  grades           Grade[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([jenjang, name])
+}
+
+// Relasi Guru - Mata Pelajaran
+model TeacherSubject {
+  id         String @id @default(cuid())
+  teacherId  String
+  subjectId  String
+  
+  teacher    User    @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  subject    Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([teacherId, subjectId])
+}
+
+// Model Siswa
+model Student {
+  id        String @id @default(cuid())
+  nis       String @unique
+  name      String
+  classId   String
+  
+  // Relasi
+  class     Class   @relation(fields: [classId], references: [id], onDelete: Cascade)
+  grades    Grade[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Model Nilai
+model Grade {
+  id         String @id @default(cuid())
+  studentId  String
+  subjectId  String
+  teacherId  String
+  classId    String
+  
+  // Komponen nilai
+  tugas1     Float?
+  tugas2     Float?
+  ulangan1   Float?
+  ulangan2   Float?
+  midTest    Float?
+  uas        Float?
+  finalGrade Float?
+  
+  // Relasi
+  student    Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subject    Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  teacher    User    @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  class      Class   @relation(fields: [classId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([studentId, subjectId])
+}
