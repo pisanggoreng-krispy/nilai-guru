@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -20,6 +20,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { 
   GraduationCap, 
   BookOpen, 
@@ -29,7 +36,9 @@ import {
   Download,
   Upload,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  FileSpreadsheet,
+  X
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
@@ -76,6 +85,12 @@ export default function InputNilaiPage() {
   const [selectedJenjang, setSelectedJenjang] = useState<string>('');
   const [selectedClassId, setSelectedClassId] = useState<string>('');
   const [selectedSubjectId, setSelectedSubjectId] = useState<string>('');
+
+  // Import states
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [importFile, setImportFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchData();
@@ -239,6 +254,79 @@ export default function InputNilaiPage() {
     window.open(`/api/export?type=grades&classId=${selectedClassId}`, '_blank');
   };
 
+  const handleExportTemplate = async () => {
+    if (!selectedClassId || !selectedSubjectId) {
+      toast.error('Pilih kelas dan mata pelajaran terlebih dahulu');
+      return;
+    }
+    
+    // Export template for import
+    window.open(`/api/export?type=template&classId=${selectedClassId}&subjectId=${selectedSubjectId}`, '_blank');
+  };
+
+  const handleImportClick = () => {
+    if (!selectedClassId || !selectedSubjectId) {
+      toast.error('Pilih kelas dan mata pelajaran terlebih dahulu');
+      return;
+    }
+    setImportDialogOpen(true);
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const validTypes = [
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/vnd.ms-excel',
+        '.xlsx',
+        '.xls'
+      ];
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      
+      if (!validTypes.includes(file.type) && !['xlsx', 'xls'].includes(fileExtension || '')) {
+        toast.error('File harus berformat Excel (.xlsx atau .xls)');
+        return;
+      }
+      setImportFile(file);
+    }
+  };
+
+  const handleImport = async () => {
+    if (!importFile || !selectedClassId || !selectedSubjectId) return;
+
+    setImporting(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', importFile);
+      formData.append('type', 'grades');
+      formData.append('classId', selectedClassId);
+      formData.append('subjectId', selectedSubjectId);
+
+      const res = await fetch('/api/import', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        toast.success(data.message);
+        setImportDialogOpen(false);
+        setImportFile(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+        // Refresh grades
+        fetchExistingGrades();
+      } else {
+        toast.error(data.error || 'Gagal mengimpor nilai');
+      }
+    } catch (error) {
+      toast.error('Terjadi kesalahan saat mengimpor');
+    } finally {
+      setImporting(false);
+    }
+  };
+
   const getGradeColor = (grade: number | null) => {
     if (grade === null) return 'text-gray-400';
     if (grade >= 90) return 'text-emerald-600';
@@ -344,7 +432,7 @@ export default function InputNilaiPage() {
               <Badge variant="outline" className="bg-white">Tugas 1: 5%</Badge>
               <Badge variant="outline" className="bg-white">Tugas 2: 5%</Badge>
               <Badge variant="outline" className="bg-white">Ulangan 1: 10%</Badge>
-              <Badge variant="outline" className="bg-white">Ulangan 2: 10%</Badge>
+              <Badge variant="outline" className="bg-white">Ulongan 2: 10%</Badge>
               <Badge variant="outline" className="bg-white">Mid Test: 30%</Badge>
               <Badge variant="outline" className="bg-white">UAS: 40%</Badge>
             </div>
@@ -363,7 +451,15 @@ export default function InputNilaiPage() {
                 </CardTitle>
                 <CardDescription>{students.length} siswa</CardDescription>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
+                <Button variant="outline" size="sm" onClick={handleExportTemplate}>
+                  <Download className="w-4 h-4 mr-2" />
+                  Template
+                </Button>
+                <Button variant="outline" size="sm" onClick={handleImportClick}>
+                  <Upload className="w-4 h-4 mr-2" />
+                  Import
+                </Button>
                 <Button variant="outline" size="sm" onClick={handleExport}>
                   <Download className="w-4 h-4 mr-2" />
                   Export
@@ -393,8 +489,8 @@ export default function InputNilaiPage() {
                     <TableHead className="min-w-[150px]">Nama Siswa</TableHead>
                     <TableHead className="w-20 text-center">Tugas 1</TableHead>
                     <TableHead className="w-20 text-center">Tugas 2</TableHead>
-                    <TableHead className="w-20 text-center">Ulangan 1</TableHead>
-                    <TableHead className="w-20 text-center">Ulangan 2</TableHead>
+                    <TableHead className="w-20 text-center">Ulongan 1</TableHead>
+                    <TableHead className="w-20 text-center">Ulongan 2</TableHead>
                     <TableHead className="w-20 text-center">Mid Test</TableHead>
                     <TableHead className="w-20 text-center">UAS</TableHead>
                     <TableHead className="w-24 text-center bg-teal-50">Nilai Akhir</TableHead>
@@ -505,6 +601,74 @@ export default function InputNilaiPage() {
           </CardContent>
         </Card>
       )}
+
+      {/* Import Dialog */}
+      <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Import Nilai dari Excel</DialogTitle>
+            <DialogDescription>
+              Upload file Excel berisi nilai siswa. Format kolom: NIS, Tugas 1, Tugas 2, Ulangan 1, Ulangan 2, Mid Test, UAS
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="flex items-center justify-center w-full">
+              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <FileSpreadsheet className="w-8 h-8 mb-2 text-gray-400" />
+                  {importFile ? (
+                    <p className="text-sm text-gray-600">{importFile.name}</p>
+                  ) : (
+                    <>
+                      <p className="mb-2 text-sm text-gray-500">
+                        <span className="font-semibold">Klik untuk upload</span> atau drag & drop
+                      </p>
+                      <p className="text-xs text-gray-500">XLSX atau XLS</p>
+                    </>
+                  )}
+                </div>
+                <input 
+                  ref={fileInputRef}
+                  type="file" 
+                  className="hidden" 
+                  accept=".xlsx,.xls"
+                  onChange={handleFileSelect}
+                />
+              </label>
+            </div>
+            
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  setImportDialogOpen(false);
+                  setImportFile(null);
+                }}
+              >
+                Batal
+              </Button>
+              <Button
+                className="flex-1"
+                disabled={!importFile || importing}
+                onClick={handleImport}
+              >
+                {importing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Mengimpor...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-4 h-4 mr-2" />
+                    Import
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

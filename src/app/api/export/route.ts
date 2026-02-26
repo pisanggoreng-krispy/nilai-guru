@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type') || 'grades';
     const classId = searchParams.get('classId');
+    const subjectId = searchParams.get('subjectId');
 
     // Get all data
     const { data: users } = await supabase.from('users').select('*');
@@ -89,6 +90,57 @@ export async function GET(request: NextRequest) {
         workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, ws, 'Kelas');
         filename = 'data_kelas.xlsx';
+        break;
+      }
+
+      case 'template': {
+        // Export template for importing grades (single subject)
+        if (!classId || !subjectId) {
+          return NextResponse.json({ success: false, error: 'ClassId dan SubjectId diperlukan' }, { status: 400 });
+        }
+
+        const targetClass = classes?.find(c => c.id === classId);
+        const targetSubject = subjects?.find(s => s.id === subjectId);
+
+        if (!targetClass || !targetSubject) {
+          return NextResponse.json({ success: false, error: 'Kelas atau mata pelajaran tidak ditemukan' }, { status: 400 });
+        }
+
+        const classStudents = students?.filter(s => s.classId === classId) || [];
+        const studentIds = classStudents.map(s => s.id);
+        const classGrades = grades?.filter(g => studentIds.includes(g.studentId) && g.subjectId === subjectId) || [];
+
+        const templateData = classStudents.map(student => {
+          const grade = classGrades.find(g => g.studentId === student.id);
+          return {
+            'NIS': student.nisn,
+            'Nama': student.name,
+            'Tugas 1': grade?.tugas1 ?? '',
+            'Tugas 2': grade?.tugas2 ?? '',
+            'Ulangan 1': grade?.ulangan1 ?? '',
+            'Ulangan 2': grade?.ulangan2 ?? '',
+            'Mid Test': grade?.midTest ?? '',
+            'UAS': grade?.finalTest ?? '',
+          };
+        });
+
+        const ws = XLSX.utils.json_to_sheet(templateData);
+        
+        // Set column widths
+        ws['!cols'] = [
+          { wch: 15 }, // NIS
+          { wch: 30 }, // Nama
+          { wch: 10 }, // Tugas 1
+          { wch: 10 }, // Tugas 2
+          { wch: 12 }, // Ulangan 1
+          { wch: 12 }, // Ulangan 2
+          { wch: 10 }, // Mid Test
+          { wch: 10 }, // UAS
+        ];
+
+        workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, ws, 'Template Nilai');
+        filename = `template_nilai_${targetSubject.name}_${targetClass.name}.xlsx`;
         break;
       }
 
