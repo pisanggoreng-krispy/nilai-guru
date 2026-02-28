@@ -1,71 +1,196 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { 
-  Users, 
-  GraduationCap, 
-  BookOpen, 
-  TrendingUp, 
-  ClipboardEdit,
-  FileSpreadsheet,
-  ArrowRight,
-  Loader2
+  Plus, 
+  Search, 
+  Download,
+  Loader2,
+  Pencil,
+  Users,
+  Save
 } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
-interface DashboardData {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-  };
-  stats: {
-    totalStudents: number;
-    totalClasses: number;
-    totalSubjects: number;
-    gradedCount: number;
-    completionRate: number;
-  };
-  waliKelasClasses: Array<{
-    id: string;
-    name: string;
-    jenjang: string;
-    waliKelas: string | null;
-    studentCount: number;
-  }>;
-  taughtSubjects: Array<{
-    id: string;
-    name: string;
-    jenjang: string;
-  }>;
-  isWaliKelas: boolean; // Apakah guru ini adalah wali kelas
+interface Class {
+  id: string;
+  name: string;
+  jenjang: string;
+  level?: string;
+  waliKelasId?: string | null;
+  waliKelas?: string | null;
+  studentCount?: number;
 }
 
-export default function DashboardPage() {
-  const router = useRouter();
-  const [data, setData] = useState<DashboardData | null>(null);
+interface Teacher {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
+export default function KelolaKelasPage() {
+  const [classes, setClasses] = useState<Class[]>([]);
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [filterJenjang, setFilterJenjang] = useState<string>('ALL');
+  
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    jenjang: 'SMP',
+    waliKelasId: 'none',
+  });
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetchDashboard();
+    fetchData();
   }, []);
 
-  const fetchDashboard = async () => {
+  const fetchData = async () => {
     try {
-      const res = await fetch('/api/dashboard');
-      const result = await res.json();
-      if (result.success) {
-        setData(result.data);
+      const [classesRes, usersRes] = await Promise.all([
+        fetch('/api/classes'),
+        fetch('/api/users'),
+      ]);
+      
+      const classesData = await classesRes.json();
+      const usersData = await usersRes.json();
+      
+      if (classesData.success) {
+        const normalizedClasses = classesData.data.map((c: Class) => ({
+          ...c,
+          jenjang: c.jenjang || c.level || 'SMP',
+        }));
+        setClasses(normalizedClasses);
+      }
+      if (usersData.success) {
+        setTeachers(usersData.data.filter((u: Teacher) => u.role === 'GURU_MAPEL'));
       }
     } catch (error) {
-      console.error('Error fetching dashboard:', error);
+      console.error('Fetch error:', error);
+      toast.error('Gagal memuat data');
     } finally {
       setLoading(false);
     }
+  };
+
+  const filteredClasses = classes.filter(c => {
+    const className = c.name || '';
+    const classJenjang = c.jenjang || c.level || '';
+    const matchSearch = className.toLowerCase().includes(search.toLowerCase());
+    const matchJenjang = filterJenjang === 'ALL' || classJenjang === filterJenjang;
+    return matchSearch && matchJenjang;
+  });
+
+  const handleOpenDialog = (kelas?: Class) => {
+    if (kelas) {
+      setEditingId(kelas.id);
+      setFormData({
+        name: kelas.name || '',
+        jenjang: kelas.jenjang || kelas.level || 'SMP',
+        waliKelasId: kelas.waliKelasId || 'none',
+      });
+    } else {
+      setEditingId(null);
+      setFormData({
+        name: '',
+        jenjang: 'SMP',
+        waliKelasId: 'none',
+      });
+    }
+    setDialogOpen(true);
+  };
+
+  const handleSave = async () => {
+    if (!formData.name) {
+      toast.error('Nama kelas harus diisi');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const waliKelasValue = formData.waliKelasId === 'none' ? null : formData.waliKelasId;
+      
+      if (editingId) {
+        const res = await fetch('/api/classes', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: editingId,
+            name: formData.name,
+            level: formData.jenjang,
+            waliKelasId: waliKelasValue,
+          }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast.success('Data kelas diperbarui');
+          setDialogOpen(false);
+          fetchData();
+        } else {
+          toast.error(data.error || 'Gagal memperbarui data');
+        }
+      } else {
+        const res = await fetch('/api/classes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: formData.name,
+            level: formData.jenjang,
+            academicYear: '2024/2025',
+            waliKelasId: waliKelasValue,
+          }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast.success('Kelas baru ditambahkan');
+          setDialogOpen(false);
+          fetchData();
+        } else {
+          toast.error(data.error || 'Gagal menambahkan kelas');
+        }
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+      toast.error('Terjadi kesalahan');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleExport = () => {
+    window.open('/api/export?type=classes', '_blank');
   };
 
   if (loading) {
@@ -76,239 +201,201 @@ export default function DashboardPage() {
     );
   }
 
-  if (!data) {
-    return <div>Gagal memuat data</div>;
-  }
-
-  const isAdmin = data.user.role === 'ADMIN';
-  const isWaliKelas = data.isWaliKelas || data.waliKelasClasses.length > 0;
-  const isGuruMapel = data.user.role === 'GURU_MAPEL';
-
   return (
     <div className="space-y-6">
-      {/* Welcome Section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Selamat Datang, {data.user.name.split(',')[0]}!
-          </h1>
-          <p className="text-gray-500 mt-1">
-            {isAdmin ? 'Administrator' : isGuruMapel ? 'Guru Mata Pelajaran' : 'Guru'}
-            {isWaliKelas && !isAdmin && ' & Wali Kelas'}
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900">Kelola Kelas</h1>
+          <p className="text-gray-500 mt-1">{classes.length} kelas terdaftar</p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => router.push('/input-nilai')} className="gap-2">
-            <ClipboardEdit className="w-4 h-4" />
-            Input Nilai
+          <Button variant="outline" onClick={handleExport}>
+            <Download className="w-4 h-4 mr-2" />
+            Export
           </Button>
-          {isWaliKelas && (
-            <Button onClick={() => router.push('/wali-kelas')} className="gap-2" variant="outline">
-              <FileSpreadsheet className="w-4 h-4" />
-              Rekap Nilai
-            </Button>
-          )}
+          <Button onClick={() => handleOpenDialog()}>
+            <Plus className="w-4 h-4 mr-2" />
+            Tambah Kelas
+          </Button>
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="border-0 shadow-sm bg-gradient-to-br from-blue-50 to-blue-100/50">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-500 rounded-lg">
-                <Users className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-xs text-blue-600 font-medium">Total Siswa</p>
-                <p className="text-2xl font-bold text-gray-900">{data.stats.totalStudents}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-sm bg-gradient-to-br from-emerald-50 to-emerald-100/50">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-500 rounded-lg">
-                <GraduationCap className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-xs text-emerald-600 font-medium">Total Kelas</p>
-                <p className="text-2xl font-bold text-gray-900">{data.stats.totalClasses}</p>
+      <Card className="border-0 shadow-sm">
+        <CardContent className="py-4">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Input
+                  placeholder="Cari nama kelas..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-10"
+                />
               </div>
             </div>
-          </CardContent>
-        </Card>
+            <Select value={filterJenjang} onValueChange={setFilterJenjang}>
+              <SelectTrigger className="w-[150px]">
+                <SelectValue placeholder="Semua Jenjang" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">Semua Jenjang</SelectItem>
+                <SelectItem value="SMP">SMP</SelectItem>
+                <SelectItem value="MA">MA</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
 
-        <Card className="border-0 shadow-sm bg-gradient-to-br from-amber-50 to-amber-100/50">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-amber-500 rounded-lg">
-                <BookOpen className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-xs text-amber-600 font-medium">Mata Pelajaran</p>
-                <p className="text-2xl font-bold text-gray-900">{data.stats.totalSubjects}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      <Card className="border-0 shadow-sm">
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-gray-50">
+                <TableHead className="w-12">No</TableHead>
+                <TableHead>Nama Kelas</TableHead>
+                <TableHead>Jenjang</TableHead>
+                <TableHead>Wali Kelas</TableHead>
+                <TableHead>Jumlah Siswa</TableHead>
+                <TableHead className="w-24 text-center">Aksi</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredClasses.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-8 text-gray-500">
+                    Tidak ada data kelas
+                  </TableCell>
+                </TableRow>
+              ) : (
+                filteredClasses.map((kelas, index) => (
+                  <TableRow key={kelas.id}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-teal-100 rounded flex items-center justify-center flex-shrink-0">
+                          <span className="font-bold text-teal-700 text-sm">{kelas.name || '-'}</span>
+                        </div>
+                        <span className="font-medium whitespace-nowrap">Kelas {kelas.name || '-'}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{kelas.jenjang || kelas.level || '-'}</Badge>
+                    </TableCell>
+                    <TableCell>
+                      {kelas.waliKelas ? (
+                        <div className="flex items-center gap-2">
+                          <Users className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                          <span className="truncate max-w-[150px]">{kelas.waliKelas}</span>
+                        </div>
+                      ) : (
+                        <span className="text-gray-400">-</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <Users className="w-4 h-4 text-gray-400" />
+                        <span>{kelas.studentCount || 0}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center justify-center gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleOpenDialog(kelas)}
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
 
-        <Card className="border-0 shadow-sm bg-gradient-to-br from-teal-50 to-teal-100/50">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-teal-500 rounded-lg">
-                <TrendingUp className="w-5 h-5 text-white" />
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{editingId ? 'Edit Kelas' : 'Tambah Kelas Baru'}</DialogTitle>
+            <DialogDescription>
+              {editingId ? 'Perbarui data kelas dan tentukan wali kelas' : 'Masukkan data kelas baru'}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Nama Kelas</Label>
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="Contoh: 7A, 10B"
+                />
               </div>
-              <div>
-                <p className="text-xs text-teal-600 font-medium">Progress Nilai</p>
-                <p className="text-2xl font-bold text-gray-900">{data.stats.completionRate}%</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Wali Kelas Classes - Show if user is wali kelas */}
-        {isWaliKelas && data.waliKelasClasses.length > 0 && (
-          <Card className="border-0 shadow-sm">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <GraduationCap className="w-5 h-5 text-teal-600" />
-                Kelas Wali
-              </CardTitle>
-              <CardDescription>Kelas yang Anda wali - Lihat rekap nilai siswa</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {data.waliKelasClasses.slice(0, 3).map((kelas) => (
-                <div
-                  key={kelas.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+              <div className="space-y-2">
+                <Label htmlFor="jenjang">Jenjang</Label>
+                <Select
+                  value={formData.jenjang}
+                  onValueChange={(v) => setFormData({ ...formData, jenjang: v })}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
-                      <span className="font-bold text-teal-700">{kelas.name}</span>
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">
-                        {kelas.jenjang} Kelas {kelas.name}
-                      </p>
-                      <p className="text-xs text-gray-500">{kelas.studentCount} siswa</p>
-                    </div>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => router.push(`/wali-kelas?classId=${kelas.id}`)}
-                  >
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Subjects Taught - Show for teachers */}
-        {(isGuruMapel || isAdmin) && data.taughtSubjects.length > 0 && (
-          <Card className="border-0 shadow-sm">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-teal-600" />
-                Mata Pelajaran Diampu
-              </CardTitle>
-              <CardDescription>Mata pelajaran yang Anda ajarkan</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {data.taughtSubjects.slice(0, 8).map((subject) => (
-                  <Badge
-                    key={subject.id}
-                    variant="secondary"
-                    className="px-3 py-1.5 bg-gray-100"
-                  >
-                    {subject.name}
-                    <span className="ml-1.5 text-xs text-gray-500">({subject.jenjang})</span>
-                  </Badge>
-                ))}
-                {data.taughtSubjects.length > 8 && (
-                  <Badge variant="outline" className="px-3 py-1.5">
-                    +{data.taughtSubjects.length - 8} lainnya
-                  </Badge>
-                )}
+                  <SelectTrigger>
+                    <SelectValue placeholder="Pilih jenjang" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="SMP">SMP</SelectItem>
+                    <SelectItem value="MA">MA</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-              <Button
-                variant="outline"
-                className="w-full mt-4"
-                onClick={() => router.push('/input-nilai')}
-              >
-                Mulai Input Nilai
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Empty state for non-admin teachers without classes */}
-        {isGuruMapel && !isWaliKelas && data.taughtSubjects.length === 0 && (
-          <Card className="border-0 shadow-sm">
-            <CardContent className="py-8 text-center">
-              <BookOpen className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-500">Belum ada mata pelajaran yang diampu</p>
-              <p className="text-sm text-gray-400 mt-1">Hubungi admin untuk penugasan</p>
-            </CardContent>
-          </Card>
-        )}
-      </div>
-
-      {/* Admin Only: Quick Links */}
-      {isAdmin && (
-        <Card className="border-0 shadow-sm bg-gradient-to-r from-gray-50 to-slate-50">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Menu Administrasi</CardTitle>
-            <CardDescription>Kelola data master sistem</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <Button
-                variant="outline"
-                className="h-auto py-4 flex-col gap-2"
-                onClick={() => router.push('/kelola-siswa')}
-              >
-                <Users className="w-5 h-5 text-blue-600" />
-                <span>Kelola Siswa</span>
-              </Button>
-              <Button
-                variant="outline"
-                className="h-auto py-4 flex-col gap-2"
-                onClick={() => router.push('/kelola-guru')}
-              >
-                <Users className="w-5 h-5 text-emerald-600" />
-                <span>Kelola Guru</span>
-              </Button>
-              <Button
-                variant="outline"
-                className="h-auto py-4 flex-col gap-2"
-                onClick={() => router.push('/kelola-kelas')}
-              >
-                <GraduationCap className="w-5 h-5 text-amber-600" />
-                <span>Kelola Kelas</span>
-              </Button>
-              <Button
-                variant="outline"
-                className="h-auto py-4 flex-col gap-2"
-                onClick={() => router.push('/input-nilai')}
-              >
-                <ClipboardEdit className="w-5 h-5 text-teal-600" />
-                <span>Input Nilai</span>
-              </Button>
             </div>
-          </CardContent>
-        </Card>
-      )}
+            <div className="space-y-2">
+              <Label htmlFor="wali">Wali Kelas</Label>
+              <Select
+                value={formData.waliKelasId}
+                onValueChange={(v) => setFormData({ ...formData, waliKelasId: v })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih wali kelas (opsional)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Tanpa Wali Kelas</SelectItem>
+                  {teachers.map((t) => (
+                    <SelectItem key={t.id} value={t.id}>
+                      {t.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-gray-500">
+                Guru yang dipilih akan menjadi wali kelas dan bisa melihat rekap nilai kelas ini
+              </p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>
+              Batal
+            </Button>
+            <Button onClick={handleSave} disabled={saving}>
+              {saving ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Menyimpan...
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4 mr-2" />
+                  Simpan
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
