@@ -45,8 +45,9 @@ interface Class {
   id: string;
   name: string;
   jenjang: string;
-  grade: number;
-  waliKelasId: string | null;
+  level?: string;
+  grade?: number;
+  waliKelasId?: string | null;
   waliKelas?: string | null;
   studentCount?: number;
 }
@@ -71,7 +72,7 @@ export default function KelolaKelasPage() {
   const [formData, setFormData] = useState({
     name: '',
     jenjang: 'SMP',
-    waliKelasId: '',
+    waliKelasId: 'none',
   });
   const [saving, setSaving] = useState(false);
 
@@ -89,12 +90,20 @@ export default function KelolaKelasPage() {
       const classesData = await classesRes.json();
       const usersData = await usersRes.json();
       
-      if (classesData.success) setClasses(classesData.data);
+      if (classesData.success) {
+        // Normalize data - map level to jenjang
+        const normalizedClasses = classesData.data.map((c: Class) => ({
+          ...c,
+          jenjang: c.jenjang || c.level || 'SMP',
+        }));
+        setClasses(normalizedClasses);
+      }
       if (usersData.success) {
         // Tampilkan semua guru (GURU_MAPEL) sebagai calon wali kelas
         setTeachers(usersData.data.filter((u: Teacher) => u.role === 'GURU_MAPEL'));
       }
     } catch (error) {
+      console.error('Fetch error:', error);
       toast.error('Gagal memuat data');
     } finally {
       setLoading(false);
@@ -102,8 +111,10 @@ export default function KelolaKelasPage() {
   };
 
   const filteredClasses = classes.filter(c => {
-    const matchSearch = c.name.toLowerCase().includes(search.toLowerCase());
-    const matchJenjang = filterJenjang === 'ALL' || c.jenjang === filterJenjang;
+    const className = c.name || '';
+    const classJenjang = c.jenjang || c.level || '';
+    const matchSearch = className.toLowerCase().includes(search.toLowerCase());
+    const matchJenjang = filterJenjang === 'ALL' || classJenjang === filterJenjang;
     return matchSearch && matchJenjang;
   });
 
@@ -111,16 +122,16 @@ export default function KelolaKelasPage() {
     if (kelas) {
       setEditingId(kelas.id);
       setFormData({
-        name: kelas.name,
-        jenjang: kelas.jenjang,
-        waliKelasId: kelas.waliKelasId || '',
+        name: kelas.name || '',
+        jenjang: kelas.jenjang || kelas.level || 'SMP',
+        waliKelasId: kelas.waliKelasId || 'none',
       });
     } else {
       setEditingId(null);
       setFormData({
         name: '',
         jenjang: 'SMP',
-        waliKelasId: '',
+        waliKelasId: 'none',
       });
     }
     setDialogOpen(true);
@@ -134,6 +145,8 @@ export default function KelolaKelasPage() {
 
     setSaving(true);
     try {
+      const waliKelasValue = formData.waliKelasId === 'none' ? null : formData.waliKelasId;
+      
       if (editingId) {
         // Update kelas
         const res = await fetch('/api/classes', {
@@ -143,7 +156,7 @@ export default function KelolaKelasPage() {
             id: editingId,
             name: formData.name,
             level: formData.jenjang,
-            waliKelasId: formData.waliKelasId || null,
+            waliKelasId: waliKelasValue,
           }),
         });
         const data = await res.json();
@@ -163,7 +176,7 @@ export default function KelolaKelasPage() {
             name: formData.name,
             level: formData.jenjang,
             academicYear: '2024/2025',
-            waliKelasId: formData.waliKelasId || null,
+            waliKelasId: waliKelasValue,
           }),
         });
         const data = await res.json();
@@ -176,6 +189,7 @@ export default function KelolaKelasPage() {
         }
       }
     } catch (error) {
+      console.error('Save error:', error);
       toast.error('Terjadi kesalahan');
     } finally {
       setSaving(false);
@@ -270,20 +284,20 @@ export default function KelolaKelasPage() {
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-teal-100 rounded flex items-center justify-center">
-                          <span className="font-bold text-teal-700 text-sm">{kelas.name}</span>
+                        <div className="w-8 h-8 bg-teal-100 rounded flex items-center justify-center flex-shrink-0">
+                          <span className="font-bold text-teal-700 text-sm">{kelas.name || '-'}</span>
                         </div>
-                        <span className="font-medium">Kelas {kelas.name}</span>
+                        <span className="font-medium whitespace-nowrap">Kelas {kelas.name || '-'}</span>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline">{kelas.jenjang}</Badge>
+                      <Badge variant="outline">{kelas.jenjang || kelas.level || '-'}</Badge>
                     </TableCell>
                     <TableCell>
                       {kelas.waliKelas ? (
                         <div className="flex items-center gap-2">
-                          <Users className="w-4 h-4 text-gray-400" />
-                          <span>{kelas.waliKelas}</span>
+                          <Users className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                          <span className="truncate max-w-[150px]">{kelas.waliKelas}</span>
                         </div>
                       ) : (
                         <span className="text-gray-400">-</span>
@@ -360,7 +374,7 @@ export default function KelolaKelasPage() {
                   <SelectValue placeholder="Pilih wali kelas (opsional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Tanpa Wali Kelas</SelectItem>
+                  <SelectItem value="none">Tanpa Wali Kelas</SelectItem>
                   {teachers.map((t) => (
                     <SelectItem key={t.id} value={t.id}>
                       {t.name}
