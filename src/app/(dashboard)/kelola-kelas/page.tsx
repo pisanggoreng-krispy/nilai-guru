@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -35,7 +35,6 @@ import {
   Download,
   Loader2,
   Pencil,
-  GraduationCap,
   Users,
   Save
 } from 'lucide-react';
@@ -46,7 +45,6 @@ interface Class {
   name: string;
   jenjang: string;
   level?: string;
-  grade?: number;
   waliKelasId?: string | null;
   waliKelas?: string | null;
   studentCount?: number;
@@ -66,7 +64,6 @@ export default function KelolaKelasPage() {
   const [search, setSearch] = useState('');
   const [filterJenjang, setFilterJenjang] = useState<string>('ALL');
   
-  // Form state
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -91,7 +88,6 @@ export default function KelolaKelasPage() {
       const usersData = await usersRes.json();
       
       if (classesData.success) {
-        // Normalize data - map level to jenjang
         const normalizedClasses = classesData.data.map((c: Class) => ({
           ...c,
           jenjang: c.jenjang || c.level || 'SMP',
@@ -99,7 +95,6 @@ export default function KelolaKelasPage() {
         setClasses(normalizedClasses);
       }
       if (usersData.success) {
-        // Tampilkan semua guru (GURU_MAPEL) sebagai calon wali kelas
         setTeachers(usersData.data.filter((u: Teacher) => u.role === 'GURU_MAPEL'));
       }
     } catch (error) {
@@ -148,7 +143,6 @@ export default function KelolaKelasPage() {
       const waliKelasValue = formData.waliKelasId === 'none' ? null : formData.waliKelasId;
       
       if (editingId) {
-        // Update kelas
         const res = await fetch('/api/classes', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -168,7 +162,6 @@ export default function KelolaKelasPage() {
           toast.error(data.error || 'Gagal memperbarui data');
         }
       } else {
-        // Create new kelas
         const res = await fetch('/api/classes', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -210,7 +203,6 @@ export default function KelolaKelasPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Kelola Kelas</h1>
@@ -228,7 +220,6 @@ export default function KelolaKelasPage() {
         </div>
       </div>
 
-      {/* Filters */}
       <Card className="border-0 shadow-sm">
         <CardContent className="py-4">
           <div className="flex flex-col sm:flex-row gap-3">
@@ -257,7 +248,6 @@ export default function KelolaKelasPage() {
         </CardContent>
       </Card>
 
-      {/* Table */}
       <Card className="border-0 shadow-sm">
         <CardContent className="p-0">
           <Table>
@@ -287,7 +277,7 @@ export default function KelolaKelasPage() {
                         <div className="w-8 h-8 bg-teal-100 rounded flex items-center justify-center flex-shrink-0">
                           <span className="font-bold text-teal-700 text-sm">{kelas.name || '-'}</span>
                         </div>
-                        <span className="font-medium whitespace-nowrap">Kelas {kelas.name || '-'}</span>
+                        <span className="font-medium whitespace-nowrap">{kelas.name || '-'}</span>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -328,7 +318,6 @@ export default function KelolaKelasPage() {
         </CardContent>
       </Card>
 
-      {/* Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
           <DialogHeader>
