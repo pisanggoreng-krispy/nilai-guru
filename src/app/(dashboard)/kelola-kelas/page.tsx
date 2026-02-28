@@ -36,7 +36,8 @@ import {
   Loader2,
   Pencil,
   GraduationCap,
-  Users
+  Users,
+  Save
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
@@ -53,6 +54,7 @@ interface Class {
 interface Teacher {
   id: string;
   name: string;
+  email: string;
   role: string;
 }
 
@@ -69,7 +71,6 @@ export default function KelolaKelasPage() {
   const [formData, setFormData] = useState({
     name: '',
     jenjang: 'SMP',
-    grade: 7,
     waliKelasId: '',
   });
   const [saving, setSaving] = useState(false);
@@ -90,7 +91,8 @@ export default function KelolaKelasPage() {
       
       if (classesData.success) setClasses(classesData.data);
       if (usersData.success) {
-        setTeachers(usersData.data.filter((u: Teacher) => u.role === 'WALI_KELAS'));
+        // Tampilkan semua guru (GURU_MAPEL) sebagai calon wali kelas
+        setTeachers(usersData.data.filter((u: Teacher) => u.role === 'GURU_MAPEL'));
       }
     } catch (error) {
       toast.error('Gagal memuat data');
@@ -111,7 +113,6 @@ export default function KelolaKelasPage() {
       setFormData({
         name: kelas.name,
         jenjang: kelas.jenjang,
-        grade: kelas.grade,
         waliKelasId: kelas.waliKelasId || '',
       });
     } else {
@@ -119,7 +120,6 @@ export default function KelolaKelasPage() {
       setFormData({
         name: '',
         jenjang: 'SMP',
-        grade: 7,
         waliKelasId: '',
       });
     }
@@ -128,15 +128,53 @@ export default function KelolaKelasPage() {
 
   const handleSave = async () => {
     if (!formData.name) {
-      toast.error('Lengkapi semua field');
+      toast.error('Nama kelas harus diisi');
       return;
     }
 
     setSaving(true);
     try {
-      toast.success(editingId ? 'Data kelas diperbarui' : 'Kelas baru ditambahkan');
-      setDialogOpen(false);
-      fetchData();
+      if (editingId) {
+        // Update kelas
+        const res = await fetch('/api/classes', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: editingId,
+            name: formData.name,
+            level: formData.jenjang,
+            waliKelasId: formData.waliKelasId || null,
+          }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast.success('Data kelas diperbarui');
+          setDialogOpen(false);
+          fetchData();
+        } else {
+          toast.error(data.error || 'Gagal memperbarui data');
+        }
+      } else {
+        // Create new kelas
+        const res = await fetch('/api/classes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: formData.name,
+            level: formData.jenjang,
+            academicYear: '2024/2025',
+            waliKelasId: formData.waliKelasId || null,
+          }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast.success('Kelas baru ditambahkan');
+          setDialogOpen(false);
+          fetchData();
+        } else {
+          toast.error(data.error || 'Gagal menambahkan kelas');
+        }
+      }
     } catch (error) {
       toast.error('Terjadi kesalahan');
     } finally {
@@ -214,7 +252,6 @@ export default function KelolaKelasPage() {
                 <TableHead className="w-12">No</TableHead>
                 <TableHead>Nama Kelas</TableHead>
                 <TableHead>Jenjang</TableHead>
-                <TableHead>Tingkat</TableHead>
                 <TableHead>Wali Kelas</TableHead>
                 <TableHead>Jumlah Siswa</TableHead>
                 <TableHead className="w-24 text-center">Aksi</TableHead>
@@ -223,7 +260,7 @@ export default function KelolaKelasPage() {
             <TableBody>
               {filteredClasses.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center py-8 text-gray-500">
+                  <TableCell colSpan={6} className="text-center py-8 text-gray-500">
                     Tidak ada data kelas
                   </TableCell>
                 </TableRow>
@@ -242,8 +279,16 @@ export default function KelolaKelasPage() {
                     <TableCell>
                       <Badge variant="outline">{kelas.jenjang}</Badge>
                     </TableCell>
-                    <TableCell>Tingkat {kelas.grade}</TableCell>
-                    <TableCell>{kelas.waliKelas || '-'}</TableCell>
+                    <TableCell>
+                      {kelas.waliKelas ? (
+                        <div className="flex items-center gap-2">
+                          <Users className="w-4 h-4 text-gray-400" />
+                          <span>{kelas.waliKelas}</span>
+                        </div>
+                      ) : (
+                        <span className="text-gray-400">-</span>
+                      )}
+                    </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
                         <Users className="w-4 h-4 text-gray-400" />
@@ -275,7 +320,7 @@ export default function KelolaKelasPage() {
           <DialogHeader>
             <DialogTitle>{editingId ? 'Edit Kelas' : 'Tambah Kelas Baru'}</DialogTitle>
             <DialogDescription>
-              {editingId ? 'Perbarui data kelas' : 'Masukkan data kelas baru'}
+              {editingId ? 'Perbarui data kelas dan tentukan wali kelas' : 'Masukkan data kelas baru'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
@@ -290,46 +335,20 @@ export default function KelolaKelasPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="grade">Tingkat</Label>
+                <Label htmlFor="jenjang">Jenjang</Label>
                 <Select
-                  value={String(formData.grade)}
-                  onValueChange={(v) => setFormData({ ...formData, grade: Number(v) })}
+                  value={formData.jenjang}
+                  onValueChange={(v) => setFormData({ ...formData, jenjang: v })}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Pilih tingkat" />
+                    <SelectValue placeholder="Pilih jenjang" />
                   </SelectTrigger>
                   <SelectContent>
-                    {formData.jenjang === 'SMP' ? (
-                      <>
-                        <SelectItem value="7">Kelas 7</SelectItem>
-                        <SelectItem value="8">Kelas 8</SelectItem>
-                        <SelectItem value="9">Kelas 9</SelectItem>
-                      </>
-                    ) : (
-                      <>
-                        <SelectItem value="10">Kelas 10</SelectItem>
-                        <SelectItem value="11">Kelas 11</SelectItem>
-                        <SelectItem value="12">Kelas 12</SelectItem>
-                      </>
-                    )}
+                    <SelectItem value="SMP">SMP</SelectItem>
+                    <SelectItem value="MA">MA</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="jenjang">Jenjang</Label>
-              <Select
-                value={formData.jenjang}
-                onValueChange={(v) => setFormData({ ...formData, jenjang: v, grade: v === 'SMP' ? 7 : 10 })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Pilih jenjang" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="SMP">SMP</SelectItem>
-                  <SelectItem value="MA">MA</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
             <div className="space-y-2">
               <Label htmlFor="wali">Wali Kelas</Label>
@@ -338,9 +357,10 @@ export default function KelolaKelasPage() {
                 onValueChange={(v) => setFormData({ ...formData, waliKelasId: v })}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Pilih wali kelas" />
+                  <SelectValue placeholder="Pilih wali kelas (opsional)" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="">Tanpa Wali Kelas</SelectItem>
                   {teachers.map((t) => (
                     <SelectItem key={t.id} value={t.id}>
                       {t.name}
@@ -348,6 +368,9 @@ export default function KelolaKelasPage() {
                   ))}
                 </SelectContent>
               </Select>
+              <p className="text-xs text-gray-500">
+                Guru yang dipilih akan menjadi wali kelas dan bisa melihat rekap nilai kelas ini
+              </p>
             </div>
           </div>
           <DialogFooter>
@@ -355,8 +378,17 @@ export default function KelolaKelasPage() {
               Batal
             </Button>
             <Button onClick={handleSave} disabled={saving}>
-              {saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
-              Simpan
+              {saving ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Menyimpan...
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4 mr-2" />
+                  Simpan
+                </>
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>

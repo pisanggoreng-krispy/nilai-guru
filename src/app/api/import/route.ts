@@ -147,7 +147,7 @@ export async function POST(request: NextRequest) {
         const tugas1 = row['Tugas 1'] ?? row['tugas1'] ?? null;
         const tugas2 = row['Tugas 2'] ?? row['tugas2'] ?? null;
         const ulangan1 = row['Ulangan 1'] ?? row['ulangan1'] ?? null;
-        const ulangan2 = row['Ulongan 2'] ?? row['ulangan2'] ?? null;
+        const ulangan2 = row['Ulangan 2'] ?? row['ulangan2'] ?? null;
         const midTest = row['Mid Test'] ?? row['midTest'] ?? row['Mid'] ?? null;
         const uas = row['UAS'] ?? row['uas'] ?? null;
 
@@ -243,8 +243,10 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        const validRoles = ['ADMIN', 'GURU_MAPEL', 'WALI_KELAS'];
+        const validRoles = ['ADMIN', 'GURU_MAPEL'];
         const roleUpper = String(role).toUpperCase().replace(' ', '_');
+        // Jika role bukan ADMIN atau GURU_MAPEL, default ke GURU_MAPEL
+        // WALI_KELAS tidak lagi dipakai, wali kelas dipilih dari menu Kelola Kelas
         const finalRole = validRoles.includes(roleUpper) ? roleUpper : 'GURU_MAPEL';
 
         if (existingUsers?.some(u => u.email === String(email))) {
@@ -260,7 +262,7 @@ export async function POST(request: NextRequest) {
             name: String(name),
             email: String(email),
             password: hashedPassword,
-            role: finalRole as 'ADMIN' | 'GURU_MAPEL' | 'WALI_KELAS',
+            role: finalRole as 'ADMIN' | 'GURU_MAPEL',
           });
 
         if (error) skipped++;

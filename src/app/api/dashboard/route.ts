@@ -84,6 +84,7 @@ export async function GET(request: NextRequest) {
           ...s,
           jenjang: s.level,
         })),
+        isWaliKelas: waliKelasClasses.length > 0,
       },
     });
   } catch (error) {

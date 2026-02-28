@@ -37,6 +37,12 @@ interface User {
   role: string;
 }
 
+interface DashboardData {
+  user: User;
+  isWaliKelas: boolean;
+  waliKelasClasses: Array<{ id: string; name: string; jenjang: string }>;
+}
+
 export default function DashboardLayout({
   children,
 }: {
@@ -45,6 +51,7 @@ export default function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
   const [user, setUser] = useState<User | null>(null);
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -54,10 +61,19 @@ export default function DashboardLayout({
 
   const checkAuth = async () => {
     try {
-      const res = await fetch('/api/auth/me');
-      const data = await res.json();
-      if (data.success) {
-        setUser(data.user);
+      const [authRes, dashboardRes] = await Promise.all([
+        fetch('/api/auth/me'),
+        fetch('/api/dashboard'),
+      ]);
+      
+      const authData = await authRes.json();
+      const dashData = await dashboardRes.json();
+      
+      if (authData.success) {
+        setUser(authData.user);
+        if (dashData.success) {
+          setDashboardData(dashData.data);
+        }
       } else {
         router.push('/login');
       }
@@ -86,55 +102,67 @@ export default function DashboardLayout({
   }
 
   const isAdmin = user.role === 'ADMIN';
-  const isWaliKelas = user.role === 'WALI_KELAS';
-  const isGuruMapel = user.role === 'GURU_MAPEL';
+  const isWaliKelas = dashboardData?.isWaliKelas || false;
 
-  const menuItems = [
-    {
-      icon: LayoutDashboard,
-      label: 'Dashboard',
-      href: '/',
-      roles: ['ADMIN', 'GURU_MAPEL', 'WALI_KELAS'],
-    },
-    {
+  // Build menu based on role and wali kelas status
+  const menuItems = [];
+
+  // Dashboard - semua role
+  menuItems.push({
+    icon: LayoutDashboard,
+    label: 'Dashboard',
+    href: '/',
+  });
+
+  // Input Nilai - Admin dan Guru Mapel
+  if (isAdmin || user.role === 'GURU_MAPEL') {
+    menuItems.push({
       icon: ClipboardEdit,
       label: 'Input Nilai',
       href: '/input-nilai',
-      roles: ['ADMIN', 'GURU_MAPEL'],
-    },
-    {
+    });
+  }
+
+  // Rekap Wali Kelas - Admin atau Guru yang jadi Wali Kelas
+  if (isAdmin || isWaliKelas) {
+    menuItems.push({
       icon: FileSpreadsheet,
-      label: 'Rekap Wali Kelas',
+      label: 'Rekap Nilai',
       href: '/wali-kelas',
-      roles: ['ADMIN', 'WALI_KELAS'],
-    },
-    {
+    });
+  }
+
+  // Menu Admin Only
+  if (isAdmin) {
+    menuItems.push({
       icon: Users,
       label: 'Kelola Siswa',
       href: '/kelola-siswa',
-      roles: ['ADMIN'],
-    },
-    {
+    });
+    menuItems.push({
       icon: UserCog,
       label: 'Kelola Guru',
       href: '/kelola-guru',
-      roles: ['ADMIN'],
-    },
-    {
+    });
+    menuItems.push({
       icon: School,
       label: 'Kelola Kelas',
       href: '/kelola-kelas',
-      roles: ['ADMIN'],
-    },
-    {
+    });
+    menuItems.push({
       icon: BookOpen,
       label: 'Kelola Mata Pelajaran',
       href: '/kelola-mapel',
-      roles: ['ADMIN'],
-    },
-  ];
+    });
+  }
 
-  const filteredMenu = menuItems.filter(item => item.roles.includes(user.role));
+  const getRoleLabel = (role: string) => {
+    switch (role) {
+      case 'ADMIN': return 'Administrator';
+      case 'GURU_MAPEL': return isWaliKelas ? 'Guru & Wali Kelas' : 'Guru Mapel';
+      default: return 'Guru';
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -169,7 +197,7 @@ export default function DashboardLayout({
 
         {/* Navigation */}
         <nav className="p-3 space-y-1">
-          {filteredMenu.map((item) => {
+          {menuItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
@@ -206,7 +234,7 @@ export default function DashboardLayout({
 
             {/* Page title for mobile */}
             <div className="lg:hidden font-medium text-gray-900">
-              {filteredMenu.find(item => item.href === pathname)?.label || 'Dashboard'}
+              {menuItems.find(item => item.href === pathname)?.label || 'Dashboard'}
             </div>
 
             {/* User menu */}
@@ -225,8 +253,7 @@ export default function DashboardLayout({
                       <span>{user.name}</span>
                       <span className="text-xs text-gray-500 font-normal">{user.email}</span>
                       <span className="text-xs text-teal-600 font-medium mt-1">
-                        {user.role === 'ADMIN' ? 'Administrator' : 
-                         user.role === 'WALI_KELAS' ? 'Wali Kelas' : 'Guru Mapel'}
+                        {getRoleLabel(user.role)}
                       </span>
                     </div>
                   </DropdownMenuLabel>

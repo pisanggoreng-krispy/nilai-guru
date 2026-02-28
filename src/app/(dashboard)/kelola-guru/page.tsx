@@ -206,12 +206,10 @@ export default function KelolaGuruPage() {
     const styles: Record<string, string> = {
       ADMIN: 'bg-purple-100 text-purple-700 border-purple-200',
       GURU_MAPEL: 'bg-blue-100 text-blue-700 border-blue-200',
-      WALI_KELAS: 'bg-emerald-100 text-emerald-700 border-emerald-200',
     };
     const labels: Record<string, string> = {
       ADMIN: 'Administrator',
       GURU_MAPEL: 'Guru Mapel',
-      WALI_KELAS: 'Wali Kelas',
     };
     return (
       <Badge variant="outline" className={styles[role] || ''}>
@@ -282,7 +280,6 @@ export default function KelolaGuruPage() {
                 <SelectItem value="ALL">Semua Role</SelectItem>
                 <SelectItem value="ADMIN">Administrator</SelectItem>
                 <SelectItem value="GURU_MAPEL">Guru Mapel</SelectItem>
-                <SelectItem value="WALI_KELAS">Wali Kelas</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -387,9 +384,11 @@ export default function KelolaGuruPage() {
                 <SelectContent>
                   <SelectItem value="ADMIN">Administrator</SelectItem>
                   <SelectItem value="GURU_MAPEL">Guru Mapel</SelectItem>
-                  <SelectItem value="WALI_KELAS">Wali Kelas</SelectItem>
                 </SelectContent>
               </Select>
+              <p className="text-xs text-gray-500">
+                Untuk menunjuk wali kelas, buka menu Kelola Kelas
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">

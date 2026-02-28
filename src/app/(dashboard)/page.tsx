@@ -42,6 +42,7 @@ interface DashboardData {
     name: string;
     jenjang: string;
   }>;
+  isWaliKelas: boolean; // Apakah guru ini adalah wali kelas
 }
 
 export default function DashboardPage() {
@@ -80,7 +81,7 @@ export default function DashboardPage() {
   }
 
   const isAdmin = data.user.role === 'ADMIN';
-  const isWaliKelas = data.user.role === 'WALI_KELAS';
+  const isWaliKelas = data.isWaliKelas || data.waliKelasClasses.length > 0;
   const isGuruMapel = data.user.role === 'GURU_MAPEL';
 
   return (
@@ -92,20 +93,19 @@ export default function DashboardPage() {
             Selamat Datang, {data.user.name.split(',')[0]}!
           </h1>
           <p className="text-gray-500 mt-1">
-            {isAdmin ? 'Administrator' : isWaliKelas ? 'Wali Kelas' : 'Guru Mata Pelajaran'}
+            {isAdmin ? 'Administrator' : isGuruMapel ? 'Guru Mata Pelajaran' : 'Guru'}
+            {isWaliKelas && !isAdmin && ' & Wali Kelas'}
           </p>
         </div>
         <div className="flex gap-2">
-          {!isWaliKelas && (
-            <Button onClick={() => router.push('/input-nilai')} className="gap-2">
-              <ClipboardEdit className="w-4 h-4" />
-              Input Nilai
-            </Button>
-          )}
+          <Button onClick={() => router.push('/input-nilai')} className="gap-2">
+            <ClipboardEdit className="w-4 h-4" />
+            Input Nilai
+          </Button>
           {isWaliKelas && (
-            <Button onClick={() => router.push('/wali-kelas')} className="gap-2">
+            <Button onClick={() => router.push('/wali-kelas')} className="gap-2" variant="outline">
               <FileSpreadsheet className="w-4 h-4" />
-              Lihat Rekap
+              Rekap Nilai
             </Button>
           )}
         </div>
@@ -172,15 +172,15 @@ export default function DashboardPage() {
 
       {/* Quick Actions */}
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Wali Kelas Classes */}
-        {(isWaliKelas || isAdmin) && data.waliKelasClasses.length > 0 && (
+        {/* Wali Kelas Classes - Show if user is wali kelas */}
+        {isWaliKelas && data.waliKelasClasses.length > 0 && (
           <Card className="border-0 shadow-sm">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
                 <GraduationCap className="w-5 h-5 text-teal-600" />
                 Kelas Wali
               </CardTitle>
-              <CardDescription>Kelas yang Anda wali</CardDescription>
+              <CardDescription>Kelas yang Anda wali - Lihat rekap nilai siswa</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {data.waliKelasClasses.slice(0, 3).map((kelas) => (
@@ -212,7 +212,7 @@ export default function DashboardPage() {
           </Card>
         )}
 
-        {/* Subjects Taught */}
+        {/* Subjects Taught - Show for teachers */}
         {(isGuruMapel || isAdmin) && data.taughtSubjects.length > 0 && (
           <Card className="border-0 shadow-sm">
             <CardHeader className="pb-3">
@@ -248,6 +248,17 @@ export default function DashboardPage() {
                 Mulai Input Nilai
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Empty state for non-admin teachers without classes */}
+        {isGuruMapel && !isWaliKelas && data.taughtSubjects.length === 0 && (
+          <Card className="border-0 shadow-sm">
+            <CardContent className="py-8 text-center">
+              <BookOpen className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+              <p className="text-gray-500">Belum ada mata pelajaran yang diampu</p>
+              <p className="text-sm text-gray-400 mt-1">Hubungi admin untuk penugasan</p>
             </CardContent>
           </Card>
         )}

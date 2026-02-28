@@ -54,6 +54,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Nama, email, dan password harus diisi' }, { status: 400 });
     }
 
+    // Validate role
+    const validRoles = ['ADMIN', 'GURU_MAPEL'];
+    const userRole = validRoles.includes(role) ? role : 'GURU_MAPEL';
+
     // Check if email already exists
     const { data: existing } = await supabase
       .from('users')
@@ -75,7 +79,7 @@ export async function POST(request: NextRequest) {
         name,
         email,
         password: hashedPassword,
-        role: role || 'GURU_MAPEL',
+        role: userRole,
       })
       .select()
       .single();
