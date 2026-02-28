@@ -272,12 +272,14 @@ export default function KelolaKelasPage() {
                 filteredClasses.map((kelas, index) => (
                   <TableRow key={kelas.id}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell>
+                                       <TableCell>
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-teal-100 rounded flex items-center justify-center flex-shrink-0">
-                          <span className="font-bold text-teal-700 text-sm">{kelas.name || '-'}</span>
+                          <span className="font-bold text-teal-700 text-xs">
+                            {kelas.name?.replace('Kelas ', '') || '-'}
+                          </span>
                         </div>
-                        <span className="font-medium whitespace-nowrap">{kelas.name || '-'}</span>
+                        <span className="font-medium">{kelas.name || '-'}</span>
                       </div>
                     </TableCell>
                     <TableCell>
