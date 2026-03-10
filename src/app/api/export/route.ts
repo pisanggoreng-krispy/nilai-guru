@@ -5,6 +5,23 @@ import * as XLSX from 'xlsx';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
+// Helper function to sort students by NIS
+const sortStudentsByNis = (students: any[]) => {
+  return students.sort((a, b) => {
+    const aNis = a.nisn || '';
+    const bNis = b.nisn || '';
+    const aNum = parseInt(aNis);
+    const bNum = parseInt(bNis);
+    if (!isNaN(aNum) && !isNaN(bNum)) {
+      return aNum - bNum;
+    }
+    return aNis.localeCompare(bNis);
+  });
+};
+
+// Helper function to sanitize filename
+const sanitizeFilename = (name: string) => name.replace(/[^a-zA-Z0-9]/g, '_');
+
 // Export grades to Excel
 export async function GET(request: NextRequest) {
   try {
@@ -223,7 +240,8 @@ export async function GET(request: NextRequest) {
           return NextResponse.json({ success: false, error: 'Kelas atau mata pelajaran tidak ditemukan' }, { status: 400 });
         }
 
-        const classStudents = students?.filter(s => s.classId === classId) || [];
+        // Filter and sort students by NIS
+        const classStudents = sortStudentsByNis(students?.filter(s => s.classId === classId) || []);
         const studentIds = classStudents.map(s => s.id);
         const classGrades = grades?.filter(g => studentIds.includes(g.studentId) && g.subjectId === subjectId) || [];
 
@@ -257,7 +275,7 @@ export async function GET(request: NextRequest) {
 
         workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, ws, 'Template Nilai');
-        filename = `template_nilai_${targetSubject.name}_${targetClass.name}.xlsx`;
+        filename = `template_nilai_${sanitizeFilename(targetSubject.name)}_${sanitizeFilename(targetClass.name)}.xlsx`;
         break;
       }
 
@@ -280,12 +298,15 @@ export async function GET(request: NextRequest) {
           classGrade = gradeMatch ? parseInt(gradeMatch[0]) : null;
         }
 
-        const classStudents = students?.filter(s => s.classId === targetClass!.id) || [];
+        // Get and sort students by NIS
+        const classStudents = sortStudentsByNis(students?.filter(s => s.classId === targetClass!.id) || []);
+        
         // Filter subjects by level AND grade
         let classSubjects = subjects?.filter(s => s.level === targetClass!.level) || [];
         if (classGrade) {
           classSubjects = classSubjects.filter(s => s.grade === classGrade);
         }
+        
         const studentIds = classStudents.map(s => s.id);
         const classGrades = grades?.filter(g => studentIds.includes(g.studentId)) || [];
         const wali = users?.find(u => u.id === targetClass!.waliKelasId);
@@ -402,12 +423,15 @@ export async function GET(request: NextRequest) {
           classGrade = gradeMatch ? parseInt(gradeMatch[0]) : null;
         }
 
-        const classStudents = students?.filter(s => s.classId === targetClass!.id) || [];
+        // Get and sort students by NIS
+        const classStudents = sortStudentsByNis(students?.filter(s => s.classId === targetClass!.id) || []);
+        
         // Filter subjects by level AND grade
         let classSubjects = subjects?.filter(s => s.level === targetClass!.level) || [];
         if (classGrade) {
           classSubjects = classSubjects.filter(s => s.grade === classGrade);
         }
+        
         const studentIds = classStudents.map(s => s.id);
         const classGrades = grades?.filter(g => studentIds.includes(g.studentId)) || [];
 
