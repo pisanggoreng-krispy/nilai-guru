@@ -12,9 +12,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Tidak terautentikasi' }, { status: 401 });
     }
 
+    const decoded = verify(token, JWT_SECRET) as { userId: string; role: string };
+
     const { searchParams } = new URL(request.url);
     const jenjang = searchParams.get('jenjang');
     const grade = searchParams.get('grade');
+    const forTeacher = searchParams.get('forTeacher') === 'true';
     
     let query = supabase.from('subjects').select('*');
     
@@ -28,8 +31,21 @@ export async function GET(request: NextRequest) {
     const { data: subjects, error } = await query.order('name');
     if (error) throw error;
 
+    // If user is GURU_MAPEL and requesting for input nilai, filter by assigned subjects
+    let filteredSubjects = subjects;
+    if (forTeacher && decoded.role === 'GURU_MAPEL') {
+      // Get teacher's assigned subjects
+      const { data: teacherSubjects } = await supabase
+        .from('teacher_subjects')
+        .select('subjectId')
+        .eq('userId', decoded.userId);
+      
+      const assignedSubjectIds = (teacherSubjects || []).map(ts => ts.subjectId);
+      filteredSubjects = subjects?.filter(s => assignedSubjectIds.includes(s.id)) || [];
+    }
+
     // Map level to jenjang for frontend compatibility
-    const mappedSubjects = subjects.map(s => ({
+    const mappedSubjects = filteredSubjects.map(s => ({
       ...s,
       jenjang: s.level,
     }));

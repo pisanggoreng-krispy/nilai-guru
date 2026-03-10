@@ -38,7 +38,8 @@ import {
   CheckCircle2,
   AlertCircle,
   FileSpreadsheet,
-  X
+  X,
+  AlertTriangle
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
@@ -113,7 +114,7 @@ export default function InputNilaiPage() {
     try {
       const [classesRes, subjectsRes] = await Promise.all([
         fetch('/api/classes'),
-        fetch('/api/subjects'),
+        fetch('/api/subjects?forTeacher=true'),
       ]);
       
       const classesData = await classesRes.json();
@@ -431,6 +432,24 @@ export default function InputNilaiPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* No Subjects Warning */}
+      {subjects.length === 0 && (
+        <Card className="border-0 shadow-sm bg-amber-50 border-amber-200">
+          <CardContent className="py-4">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <h3 className="font-medium text-amber-800">Belum Ada Mata Pelajaran yang Ditugaskan</h3>
+                <p className="text-sm text-amber-700 mt-1">
+                  Anda belum ditugaskan untuk mengajar mata pelajaran apapun. 
+                  Silakan hubungi administrator untuk mendapatkan penugasan mata pelajaran.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Bobot Info */}
       {selectedClassId && selectedSubjectId && (

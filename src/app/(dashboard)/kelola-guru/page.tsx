@@ -39,7 +39,8 @@ import {
   Trash2,
   FileSpreadsheet,
   KeyRound,
-  Checkbox
+  Checkbox,
+  Users
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
@@ -76,6 +77,7 @@ export default function KelolaGuruPage() {
   const [saving, setSaving] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const teacherSubjectInputRef = useRef<HTMLInputElement>(null);
   
   // Credentials state
   const [credentialsDialogOpen, setCredentialsDialogOpen] = useState(false);
@@ -192,6 +194,43 @@ export default function KelolaGuruPage() {
 
   const handleDownloadTemplate = () => {
     window.open('/api/export?type=template-teachers', '_blank');
+  };
+
+  const handleDownloadTeacherSubjectTemplate = () => {
+    window.open('/api/export?type=template-teacher-subjects', '_blank');
+  };
+
+  const handleImportTeacherSubjects = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const importFormData = new FormData();
+    importFormData.append('file', file);
+    importFormData.append('type', 'teacher-subjects');
+    importFormData.append('replaceMode', 'true');
+
+    try {
+      const res = await fetch('/api/import', {
+        method: 'POST',
+        body: importFormData,
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success(data.message);
+        // Show errors if any
+        if (data.errors && data.errors.length > 0) {
+          data.errors.forEach((err: string) => toast.error(err));
+        }
+      } else {
+        toast.error(data.error || 'Gagal mengimpor');
+      }
+    } catch (error) {
+      toast.error('Gagal mengimpor data');
+    }
+    
+    if (teacherSubjectInputRef.current) {
+      teacherSubjectInputRef.current.value = '';
+    }
   };
 
   const downloadCredentials = (credentials: Credential[]) => {
@@ -331,13 +370,28 @@ export default function KelolaGuruPage() {
             onChange={handleImport}
             className="hidden"
           />
+          <input
+            type="file"
+            ref={teacherSubjectInputRef}
+            accept=".xlsx,.xls,.csv"
+            onChange={handleImportTeacherSubjects}
+            className="hidden"
+          />
           <Button variant="outline" onClick={handleDownloadTemplate}>
             <FileSpreadsheet className="w-4 h-4 mr-2" />
             Template
           </Button>
+          <Button variant="outline" onClick={handleDownloadTeacherSubjectTemplate}>
+            <Users className="w-4 h-4 mr-2" />
+            Template Guru-Mapel
+          </Button>
           <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
             <Upload className="w-4 h-4 mr-2" />
             Import
+          </Button>
+          <Button variant="outline" onClick={() => teacherSubjectInputRef.current?.click()}>
+            <Users className="w-4 h-4 mr-2" />
+            Import Guru-Mapel
           </Button>
           <Button variant="outline" onClick={handleExport}>
             <Download className="w-4 h-4 mr-2" />

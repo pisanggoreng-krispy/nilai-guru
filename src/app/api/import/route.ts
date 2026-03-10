@@ -582,7 +582,110 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    return NextResponse.json({ success: false, error: 'Tipe import tidak valid. Gunakan: students, teachers, subjects, grades' }, { status: 400 });
+    if (type === 'teacher-subjects') {
+      // Import teacher-subject relations
+      const replaceMode = formData.get('replaceMode') === 'true';
+      
+      let imported = 0;
+      let skipped = 0;
+      let deleted = 0;
+      const errors: string[] = [];
+
+      // Get all teachers and subjects for matching
+      const { data: users } = await supabase.from('users').select('*');
+      const { data: allSubjects } = await supabase.from('subjects').select('*');
+
+      if (replaceMode) {
+        // Delete all existing teacher_subjects relations
+        const { error: deleteError } = await supabase
+          .from('teacher_subjects')
+          .delete()
+          .neq('id', ''); // Delete all
+        
+        if (!deleteError) {
+          // Count deleted - we'll just say all were replaced
+          deleted = 1; // Just indicate replacement happened
+        }
+      }
+
+      for (const row of data as any[]) {
+        const teacherName = row['Nama Guru'] || row['nama_guru'] || row['Guru'] || '';
+        const teacherEmail = row['Email Guru'] || row['email_guru'] || row['Email'] || '';
+        const subjectName = row['Nama Mapel'] || row['nama_mapel'] || row['Mapel'] || '';
+        const jenjang = row['Jenjang'] || row['jenjang'] || '';
+        const kelas = row['Kelas'] || row['kelas'] || '';
+
+        if (!teacherEmail || !subjectName || !jenjang || !kelas) {
+          skipped++;
+          continue;
+        }
+
+        // Find teacher by email
+        const teacher = users?.find(u => u.email.toLowerCase() === teacherEmail.toLowerCase().trim());
+        if (!teacher) {
+          errors.push(`Guru tidak ditemukan: ${teacherEmail}`);
+          skipped++;
+          continue;
+        }
+
+        // Find subject by name, level, and grade
+        const subject = allSubjects?.find(s => 
+          s.name.toLowerCase() === subjectName.toLowerCase().trim() &&
+          s.level === jenjang.toUpperCase() &&
+          s.grade === parseInt(kelas)
+        );
+
+        if (!subject) {
+          errors.push(`Mapel tidak ditemukan: ${subjectName} (${jenjang} - ${kelas})`);
+          skipped++;
+          continue;
+        }
+
+        // Check if relation already exists
+        const { data: existing } = await supabase
+          .from('teacher_subjects')
+          .select('id')
+          .eq('userId', teacher.id)
+          .eq('subjectId', subject.id)
+          .single();
+
+        if (existing) {
+          // Already exists, skip
+          continue;
+        }
+
+        // Create relation
+        const id = generateId('ts-');
+        const { error } = await supabase
+          .from('teacher_subjects')
+          .insert({
+            id,
+            userId: teacher.id,
+            subjectId: subject.id,
+          });
+
+        if (error) {
+          errors.push(`Gagal membuat relasi: ${teacher.name} - ${subject.name}`);
+          skipped++;
+        } else {
+          imported++;
+        }
+      }
+
+      let message = `Import selesai: ${imported} relasi guru-mapel dibuat`;
+      if (deleted > 0) message += ' (data lama diganti)';
+      if (skipped > 0) message += `, ${skipped} dilewati`;
+
+      return NextResponse.json({
+        success: true,
+        message,
+        imported,
+        skipped,
+        errors: errors.slice(0, 10), // Return first 10 errors
+      });
+    }
+
+    return NextResponse.json({ success: false, error: 'Tipe import tidak valid. Gunakan: students, teachers, subjects, grades, teacher-subjects' }, { status: 400 });
   } catch (error) {
     console.error('Import error:', error);
     return NextResponse.json(

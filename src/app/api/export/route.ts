@@ -185,6 +185,31 @@ export async function GET(request: NextRequest) {
         break;
       }
 
+      case 'template-teacher-subjects': {
+        // Export template for importing teacher-subject relations
+        const templateData = [
+          { 'Nama Guru': 'Budi Santoso', 'Email Guru': 'budi@sekolah.com', 'Nama Mapel': 'Matematika', 'Jenjang': 'SMP', 'Kelas': 7 },
+          { 'Nama Guru': 'Budi Santoso', 'Email Guru': 'budi@sekolah.com', 'Nama Mapel': 'Matematika', 'Jenjang': 'SMP', 'Kelas': 8 },
+          { 'Nama Guru': 'Sri Wahyuni', 'Email Guru': 'sri@sekolah.com', 'Nama Mapel': 'Bahasa Indonesia', 'Jenjang': 'SMP', 'Kelas': 7 },
+          { 'Nama Guru': 'Ahmad Fauzi', 'Email Guru': 'ahmad@sekolah.com', 'Nama Mapel': 'Fiqih', 'Jenjang': 'MA', 'Kelas': 10 },
+        ];
+
+        const ws = XLSX.utils.json_to_sheet(templateData);
+        
+        ws['!cols'] = [
+          { wch: 25 }, // Nama Guru
+          { wch: 25 }, // Email Guru
+          { wch: 20 }, // Nama Mapel
+          { wch: 10 }, // Jenjang
+          { wch: 8 },  // Kelas
+        ];
+
+        workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, ws, 'Template Guru-Mapel');
+        filename = 'template_guru_mapel.xlsx';
+        break;
+      }
+
       case 'template': {
         // Export template for importing grades (single subject)
         if (!classId || !subjectId) {
