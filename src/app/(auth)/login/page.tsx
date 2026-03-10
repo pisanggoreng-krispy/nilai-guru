@@ -127,38 +127,6 @@ export default function LoginPage() {
                 )}
               </Button>
             </form>
-
-            {/* Demo accounts */}
-            <div className="mt-6 pt-6 border-t">
-              <p className="text-xs text-gray-500 text-center mb-3">Akun Demo:</p>
-              <div className="space-y-2 text-xs">
-                <button
-                  type="button"
-                  onClick={() => { setEmail('admin@sekolah.com'); setPassword('password123'); }}
-                  className="w-full text-left px-3 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
-                >
-                  <span className="font-medium text-gray-700">Admin:</span>
-                  <span className="text-gray-500 ml-2">admin@sekolah.com</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => { setEmail('budi@sekolah.com'); setPassword('password123'); }}
-                  className="w-full text-left px-3 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
-                >
-                  <span className="font-medium text-gray-700">Guru Mapel:</span>
-                  <span className="text-gray-500 ml-2">budi@sekolah.com</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => { setEmail('sri@sekolah.com'); setPassword('password123'); }}
-                  className="w-full text-left px-3 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
-                >
-                  <span className="font-medium text-gray-700">Wali Kelas:</span>
-                  <span className="text-gray-500 ml-2">sri@sekolah.com</span>
-                </button>
-              </div>
-              <p className="text-xs text-gray-400 text-center mt-3">Password: password123</p>
-            </div>
           </CardContent>
         </Card>
       </div>

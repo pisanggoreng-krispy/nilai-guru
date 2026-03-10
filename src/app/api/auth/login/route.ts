@@ -62,12 +62,12 @@ export async function POST(request: NextRequest) {
       token,
     });
 
-    // Set cookie
+    // Set cookie as session cookie (no maxAge = deleted when browser closes)
     response.cookies.set('auth-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      // No maxAge = session cookie (deleted when browser closes)
     });
 
     return response;
