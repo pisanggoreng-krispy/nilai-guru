@@ -1,0 +1,1442 @@
+[
+  {
+    "nis": "SMP7A001",
+    "name": "Ahmad Rizki Pratama",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829667-082k0tx8p",
+    "createdAt": "2026-02-26T18:50:29.667Z",
+    "updatedAt": "2026-02-26T18:50:29.667Z"
+  },
+  {
+    "nis": "SMP7A002",
+    "name": "Siti Nurhaliza",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829667-4rwlwzgvh",
+    "createdAt": "2026-02-26T18:50:29.667Z",
+    "updatedAt": "2026-02-26T18:50:29.667Z"
+  },
+  {
+    "nis": "SMP7A003",
+    "name": "Muhammad Fadli Rahman",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829667-rtxxcho8c",
+    "createdAt": "2026-02-26T18:50:29.667Z",
+    "updatedAt": "2026-02-26T18:50:29.667Z"
+  },
+  {
+    "nis": "SMP7A004",
+    "name": "Putri Wulandari",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829667-j2mfqg30w",
+    "createdAt": "2026-02-26T18:50:29.667Z",
+    "updatedAt": "2026-02-26T18:50:29.667Z"
+  },
+  {
+    "nis": "SMP7A005",
+    "name": "Dimas Adi Saputra",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829667-j5llkdlwu",
+    "createdAt": "2026-02-26T18:50:29.667Z",
+    "updatedAt": "2026-02-26T18:50:29.667Z"
+  },
+  {
+    "nis": "SMP7A006",
+    "name": "Anisa Fitriani",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829668-jlx6kiaq7",
+    "createdAt": "2026-02-26T18:50:29.668Z",
+    "updatedAt": "2026-02-26T18:50:29.668Z"
+  },
+  {
+    "nis": "SMP7A007",
+    "name": "Bagus Setiawan",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829668-mp6s183zq",
+    "createdAt": "2026-02-26T18:50:29.668Z",
+    "updatedAt": "2026-02-26T18:50:29.668Z"
+  },
+  {
+    "nis": "SMP7A008",
+    "name": "Dewi Lestari",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829668-md528kwz4",
+    "createdAt": "2026-02-26T18:50:29.668Z",
+    "updatedAt": "2026-02-26T18:50:29.668Z"
+  },
+  {
+    "nis": "SMP7A009",
+    "name": "Fajar Nugroho",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829668-zgutd9kai",
+    "createdAt": "2026-02-26T18:50:29.668Z",
+    "updatedAt": "2026-02-26T18:50:29.668Z"
+  },
+  {
+    "nis": "SMP7A010",
+    "name": "Rina Kartika Sari",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829668-o1bvmv0u3",
+    "createdAt": "2026-02-26T18:50:29.668Z",
+    "updatedAt": "2026-02-26T18:50:29.668Z"
+  },
+  {
+    "nis": "SMP7A011",
+    "name": "Yusuf Hidayat",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829668-dxihpvk9d",
+    "createdAt": "2026-02-26T18:50:29.668Z",
+    "updatedAt": "2026-02-26T18:50:29.668Z"
+  },
+  {
+    "nis": "SMP7A012",
+    "name": "Nabila Azzahra",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829669-kmr0yynhi",
+    "createdAt": "2026-02-26T18:50:29.669Z",
+    "updatedAt": "2026-02-26T18:50:29.669Z"
+  },
+  {
+    "nis": "SMP7A013",
+    "name": "Rizky Ramadhan",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829669-eeuuy397i",
+    "createdAt": "2026-02-26T18:50:29.669Z",
+    "updatedAt": "2026-02-26T18:50:29.669Z"
+  },
+  {
+    "nis": "SMP7A014",
+    "name": "Sinta Dewi",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829669-qzat1aaft",
+    "createdAt": "2026-02-26T18:50:29.669Z",
+    "updatedAt": "2026-02-26T18:50:29.669Z"
+  },
+  {
+    "nis": "SMP7A015",
+    "name": "Budi Santoso",
+    "classId": "1772131829664-idsmwotrv",
+    "id": "1772131829669-bjn92jg3v",
+    "createdAt": "2026-02-26T18:50:29.669Z",
+    "updatedAt": "2026-02-26T18:50:29.669Z"
+  },
+  {
+    "nis": "SMP7B001",
+    "name": "Ahmad Rizki Pratama",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829669-eeyda2djs",
+    "createdAt": "2026-02-26T18:50:29.669Z",
+    "updatedAt": "2026-02-26T18:50:29.669Z"
+  },
+  {
+    "nis": "SMP7B002",
+    "name": "Siti Nurhaliza",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829669-qv4jdujd1",
+    "createdAt": "2026-02-26T18:50:29.669Z",
+    "updatedAt": "2026-02-26T18:50:29.669Z"
+  },
+  {
+    "nis": "SMP7B003",
+    "name": "Muhammad Fadli Rahman",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829670-uhxxalu5f",
+    "createdAt": "2026-02-26T18:50:29.670Z",
+    "updatedAt": "2026-02-26T18:50:29.670Z"
+  },
+  {
+    "nis": "SMP7B004",
+    "name": "Putri Wulandari",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829670-fwu6cnuak",
+    "createdAt": "2026-02-26T18:50:29.670Z",
+    "updatedAt": "2026-02-26T18:50:29.670Z"
+  },
+  {
+    "nis": "SMP7B005",
+    "name": "Dimas Adi Saputra",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829670-gngtu01fb",
+    "createdAt": "2026-02-26T18:50:29.670Z",
+    "updatedAt": "2026-02-26T18:50:29.670Z"
+  },
+  {
+    "nis": "SMP7B006",
+    "name": "Anisa Fitriani",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829670-5dl7efcqy",
+    "createdAt": "2026-02-26T18:50:29.670Z",
+    "updatedAt": "2026-02-26T18:50:29.670Z"
+  },
+  {
+    "nis": "SMP7B007",
+    "name": "Bagus Setiawan",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829670-pryseya3n",
+    "createdAt": "2026-02-26T18:50:29.670Z",
+    "updatedAt": "2026-02-26T18:50:29.670Z"
+  },
+  {
+    "nis": "SMP7B008",
+    "name": "Dewi Lestari",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829670-z88iwh40w",
+    "createdAt": "2026-02-26T18:50:29.670Z",
+    "updatedAt": "2026-02-26T18:50:29.670Z"
+  },
+  {
+    "nis": "SMP7B009",
+    "name": "Fajar Nugroho",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829671-381avueod",
+    "createdAt": "2026-02-26T18:50:29.671Z",
+    "updatedAt": "2026-02-26T18:50:29.671Z"
+  },
+  {
+    "nis": "SMP7B010",
+    "name": "Rina Kartika Sari",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829671-oa671wevm",
+    "createdAt": "2026-02-26T18:50:29.671Z",
+    "updatedAt": "2026-02-26T18:50:29.671Z"
+  },
+  {
+    "nis": "SMP7B011",
+    "name": "Yusuf Hidayat",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829671-svezfqoyb",
+    "createdAt": "2026-02-26T18:50:29.671Z",
+    "updatedAt": "2026-02-26T18:50:29.671Z"
+  },
+  {
+    "nis": "SMP7B012",
+    "name": "Nabila Azzahra",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829671-ds7kbshlm",
+    "createdAt": "2026-02-26T18:50:29.671Z",
+    "updatedAt": "2026-02-26T18:50:29.671Z"
+  },
+  {
+    "nis": "SMP7B013",
+    "name": "Rizky Ramadhan",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829671-4yhrf23hn",
+    "createdAt": "2026-02-26T18:50:29.671Z",
+    "updatedAt": "2026-02-26T18:50:29.671Z"
+  },
+  {
+    "nis": "SMP7B014",
+    "name": "Sinta Dewi",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829671-zqi7ve1qo",
+    "createdAt": "2026-02-26T18:50:29.671Z",
+    "updatedAt": "2026-02-26T18:50:29.671Z"
+  },
+  {
+    "nis": "SMP7B015",
+    "name": "Budi Santoso",
+    "classId": "1772131829665-1to37okkf",
+    "id": "1772131829672-vpb7cnr43",
+    "createdAt": "2026-02-26T18:50:29.672Z",
+    "updatedAt": "2026-02-26T18:50:29.672Z"
+  },
+  {
+    "nis": "SMP8A001",
+    "name": "Ahmad Rizki Pratama",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829672-x5g0uwbec",
+    "createdAt": "2026-02-26T18:50:29.672Z",
+    "updatedAt": "2026-02-26T18:50:29.672Z"
+  },
+  {
+    "nis": "SMP8A002",
+    "name": "Siti Nurhaliza",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829672-fdd6jv9ie",
+    "createdAt": "2026-02-26T18:50:29.672Z",
+    "updatedAt": "2026-02-26T18:50:29.672Z"
+  },
+  {
+    "nis": "SMP8A003",
+    "name": "Muhammad Fadli Rahman",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829672-ox2biaitm",
+    "createdAt": "2026-02-26T18:50:29.672Z",
+    "updatedAt": "2026-02-26T18:50:29.672Z"
+  },
+  {
+    "nis": "SMP8A004",
+    "name": "Putri Wulandari",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829672-0rwhk0oy2",
+    "createdAt": "2026-02-26T18:50:29.672Z",
+    "updatedAt": "2026-02-26T18:50:29.672Z"
+  },
+  {
+    "nis": "SMP8A005",
+    "name": "Dimas Adi Saputra",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829672-3sskw52ej",
+    "createdAt": "2026-02-26T18:50:29.672Z",
+    "updatedAt": "2026-02-26T18:50:29.672Z"
+  },
+  {
+    "nis": "SMP8A006",
+    "name": "Anisa Fitriani",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829673-06j6ko16v",
+    "createdAt": "2026-02-26T18:50:29.673Z",
+    "updatedAt": "2026-02-26T18:50:29.673Z"
+  },
+  {
+    "nis": "SMP8A007",
+    "name": "Bagus Setiawan",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829673-usykckz85",
+    "createdAt": "2026-02-26T18:50:29.673Z",
+    "updatedAt": "2026-02-26T18:50:29.673Z"
+  },
+  {
+    "nis": "SMP8A008",
+    "name": "Dewi Lestari",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829673-8fc3kkdsv",
+    "createdAt": "2026-02-26T18:50:29.673Z",
+    "updatedAt": "2026-02-26T18:50:29.673Z"
+  },
+  {
+    "nis": "SMP8A009",
+    "name": "Fajar Nugroho",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829674-8exc608z0",
+    "createdAt": "2026-02-26T18:50:29.674Z",
+    "updatedAt": "2026-02-26T18:50:29.674Z"
+  },
+  {
+    "nis": "SMP8A010",
+    "name": "Rina Kartika Sari",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829674-pekz0g2co",
+    "createdAt": "2026-02-26T18:50:29.674Z",
+    "updatedAt": "2026-02-26T18:50:29.674Z"
+  },
+  {
+    "nis": "SMP8A011",
+    "name": "Yusuf Hidayat",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829674-ljgr4xtru",
+    "createdAt": "2026-02-26T18:50:29.674Z",
+    "updatedAt": "2026-02-26T18:50:29.674Z"
+  },
+  {
+    "nis": "SMP8A012",
+    "name": "Nabila Azzahra",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829674-dubev73g6",
+    "createdAt": "2026-02-26T18:50:29.674Z",
+    "updatedAt": "2026-02-26T18:50:29.674Z"
+  },
+  {
+    "nis": "SMP8A013",
+    "name": "Rizky Ramadhan",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829674-l1cqby73e",
+    "createdAt": "2026-02-26T18:50:29.674Z",
+    "updatedAt": "2026-02-26T18:50:29.674Z"
+  },
+  {
+    "nis": "SMP8A014",
+    "name": "Sinta Dewi",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829674-c7t0swq1r",
+    "createdAt": "2026-02-26T18:50:29.674Z",
+    "updatedAt": "2026-02-26T18:50:29.674Z"
+  },
+  {
+    "nis": "SMP8A015",
+    "name": "Budi Santoso",
+    "classId": "1772131829665-3cwyv6fna",
+    "id": "1772131829675-prxpa4qjq",
+    "createdAt": "2026-02-26T18:50:29.675Z",
+    "updatedAt": "2026-02-26T18:50:29.675Z"
+  },
+  {
+    "nis": "SMP8B001",
+    "name": "Ahmad Rizki Pratama",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829675-k73vbi9pd",
+    "createdAt": "2026-02-26T18:50:29.675Z",
+    "updatedAt": "2026-02-26T18:50:29.675Z"
+  },
+  {
+    "nis": "SMP8B002",
+    "name": "Siti Nurhaliza",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829675-5ewvqfhyt",
+    "createdAt": "2026-02-26T18:50:29.675Z",
+    "updatedAt": "2026-02-26T18:50:29.675Z"
+  },
+  {
+    "nis": "SMP8B003",
+    "name": "Muhammad Fadli Rahman",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829675-l5ivshrg2",
+    "createdAt": "2026-02-26T18:50:29.675Z",
+    "updatedAt": "2026-02-26T18:50:29.675Z"
+  },
+  {
+    "nis": "SMP8B004",
+    "name": "Putri Wulandari",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829675-idft30d8o",
+    "createdAt": "2026-02-26T18:50:29.675Z",
+    "updatedAt": "2026-02-26T18:50:29.675Z"
+  },
+  {
+    "nis": "SMP8B005",
+    "name": "Dimas Adi Saputra",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829675-ibv1uvasi",
+    "createdAt": "2026-02-26T18:50:29.675Z",
+    "updatedAt": "2026-02-26T18:50:29.675Z"
+  },
+  {
+    "nis": "SMP8B006",
+    "name": "Anisa Fitriani",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829676-za1jninte",
+    "createdAt": "2026-02-26T18:50:29.676Z",
+    "updatedAt": "2026-02-26T18:50:29.676Z"
+  },
+  {
+    "nis": "SMP8B007",
+    "name": "Bagus Setiawan",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829676-xpv59c68c",
+    "createdAt": "2026-02-26T18:50:29.676Z",
+    "updatedAt": "2026-02-26T18:50:29.676Z"
+  },
+  {
+    "nis": "SMP8B008",
+    "name": "Dewi Lestari",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829676-zha1f0jhj",
+    "createdAt": "2026-02-26T18:50:29.676Z",
+    "updatedAt": "2026-02-26T18:50:29.676Z"
+  },
+  {
+    "nis": "SMP8B009",
+    "name": "Fajar Nugroho",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829676-oedbvxvqh",
+    "createdAt": "2026-02-26T18:50:29.676Z",
+    "updatedAt": "2026-02-26T18:50:29.676Z"
+  },
+  {
+    "nis": "SMP8B010",
+    "name": "Rina Kartika Sari",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829676-jxbealdsm",
+    "createdAt": "2026-02-26T18:50:29.676Z",
+    "updatedAt": "2026-02-26T18:50:29.676Z"
+  },
+  {
+    "nis": "SMP8B011",
+    "name": "Yusuf Hidayat",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829676-e05zluutw",
+    "createdAt": "2026-02-26T18:50:29.676Z",
+    "updatedAt": "2026-02-26T18:50:29.676Z"
+  },
+  {
+    "nis": "SMP8B012",
+    "name": "Nabila Azzahra",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829677-ln3xc7urt",
+    "createdAt": "2026-02-26T18:50:29.677Z",
+    "updatedAt": "2026-02-26T18:50:29.677Z"
+  },
+  {
+    "nis": "SMP8B013",
+    "name": "Rizky Ramadhan",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829677-hdp03hn1j",
+    "createdAt": "2026-02-26T18:50:29.677Z",
+    "updatedAt": "2026-02-26T18:50:29.677Z"
+  },
+  {
+    "nis": "SMP8B014",
+    "name": "Sinta Dewi",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829677-o90drjyif",
+    "createdAt": "2026-02-26T18:50:29.677Z",
+    "updatedAt": "2026-02-26T18:50:29.677Z"
+  },
+  {
+    "nis": "SMP8B015",
+    "name": "Budi Santoso",
+    "classId": "1772131829665-bgt39rx7x",
+    "id": "1772131829677-u0ftplp86",
+    "createdAt": "2026-02-26T18:50:29.677Z",
+    "updatedAt": "2026-02-26T18:50:29.677Z"
+  },
+  {
+    "nis": "SMP9A001",
+    "name": "Ahmad Rizki Pratama",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829677-gcmktn96d",
+    "createdAt": "2026-02-26T18:50:29.677Z",
+    "updatedAt": "2026-02-26T18:50:29.677Z"
+  },
+  {
+    "nis": "SMP9A002",
+    "name": "Siti Nurhaliza",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829678-5dewf9p7q",
+    "createdAt": "2026-02-26T18:50:29.678Z",
+    "updatedAt": "2026-02-26T18:50:29.678Z"
+  },
+  {
+    "nis": "SMP9A003",
+    "name": "Muhammad Fadli Rahman",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829678-ov3ayhv9v",
+    "createdAt": "2026-02-26T18:50:29.678Z",
+    "updatedAt": "2026-02-26T18:50:29.678Z"
+  },
+  {
+    "nis": "SMP9A004",
+    "name": "Putri Wulandari",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829678-pu6iwc93m",
+    "createdAt": "2026-02-26T18:50:29.678Z",
+    "updatedAt": "2026-02-26T18:50:29.678Z"
+  },
+  {
+    "nis": "SMP9A005",
+    "name": "Dimas Adi Saputra",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829678-fl7lf51pf",
+    "createdAt": "2026-02-26T18:50:29.678Z",
+    "updatedAt": "2026-02-26T18:50:29.678Z"
+  },
+  {
+    "nis": "SMP9A006",
+    "name": "Anisa Fitriani",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829678-azdjunao8",
+    "createdAt": "2026-02-26T18:50:29.678Z",
+    "updatedAt": "2026-02-26T18:50:29.678Z"
+  },
+  {
+    "nis": "SMP9A007",
+    "name": "Bagus Setiawan",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829679-cva3ab0qx",
+    "createdAt": "2026-02-26T18:50:29.679Z",
+    "updatedAt": "2026-02-26T18:50:29.679Z"
+  },
+  {
+    "nis": "SMP9A008",
+    "name": "Dewi Lestari",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829679-3ur1ttszm",
+    "createdAt": "2026-02-26T18:50:29.679Z",
+    "updatedAt": "2026-02-26T18:50:29.679Z"
+  },
+  {
+    "nis": "SMP9A009",
+    "name": "Fajar Nugroho",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829679-vevd5g1qr",
+    "createdAt": "2026-02-26T18:50:29.679Z",
+    "updatedAt": "2026-02-26T18:50:29.679Z"
+  },
+  {
+    "nis": "SMP9A010",
+    "name": "Rina Kartika Sari",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829679-q4f7jgipx",
+    "createdAt": "2026-02-26T18:50:29.679Z",
+    "updatedAt": "2026-02-26T18:50:29.679Z"
+  },
+  {
+    "nis": "SMP9A011",
+    "name": "Yusuf Hidayat",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829679-dm9jftcr7",
+    "createdAt": "2026-02-26T18:50:29.679Z",
+    "updatedAt": "2026-02-26T18:50:29.679Z"
+  },
+  {
+    "nis": "SMP9A012",
+    "name": "Nabila Azzahra",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829679-4zylg71eb",
+    "createdAt": "2026-02-26T18:50:29.679Z",
+    "updatedAt": "2026-02-26T18:50:29.679Z"
+  },
+  {
+    "nis": "SMP9A013",
+    "name": "Rizky Ramadhan",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829680-m7eg2xpc5",
+    "createdAt": "2026-02-26T18:50:29.680Z",
+    "updatedAt": "2026-02-26T18:50:29.680Z"
+  },
+  {
+    "nis": "SMP9A014",
+    "name": "Sinta Dewi",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829680-6v6yfvckf",
+    "createdAt": "2026-02-26T18:50:29.680Z",
+    "updatedAt": "2026-02-26T18:50:29.680Z"
+  },
+  {
+    "nis": "SMP9A015",
+    "name": "Budi Santoso",
+    "classId": "1772131829665-1v8ur576v",
+    "id": "1772131829680-l490bpvkh",
+    "createdAt": "2026-02-26T18:50:29.680Z",
+    "updatedAt": "2026-02-26T18:50:29.680Z"
+  },
+  {
+    "nis": "SMP9B001",
+    "name": "Ahmad Rizki Pratama",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829680-ra8cu2sim",
+    "createdAt": "2026-02-26T18:50:29.680Z",
+    "updatedAt": "2026-02-26T18:50:29.680Z"
+  },
+  {
+    "nis": "SMP9B002",
+    "name": "Siti Nurhaliza",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829680-kgngjemni",
+    "createdAt": "2026-02-26T18:50:29.680Z",
+    "updatedAt": "2026-02-26T18:50:29.680Z"
+  },
+  {
+    "nis": "SMP9B003",
+    "name": "Muhammad Fadli Rahman",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829681-k55q5ou1c",
+    "createdAt": "2026-02-26T18:50:29.681Z",
+    "updatedAt": "2026-02-26T18:50:29.681Z"
+  },
+  {
+    "nis": "SMP9B004",
+    "name": "Putri Wulandari",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829681-64t2svxw6",
+    "createdAt": "2026-02-26T18:50:29.681Z",
+    "updatedAt": "2026-02-26T18:50:29.681Z"
+  },
+  {
+    "nis": "SMP9B005",
+    "name": "Dimas Adi Saputra",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829681-rtua3fws3",
+    "createdAt": "2026-02-26T18:50:29.681Z",
+    "updatedAt": "2026-02-26T18:50:29.681Z"
+  },
+  {
+    "nis": "SMP9B006",
+    "name": "Anisa Fitriani",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829682-q6unnps1p",
+    "createdAt": "2026-02-26T18:50:29.682Z",
+    "updatedAt": "2026-02-26T18:50:29.682Z"
+  },
+  {
+    "nis": "SMP9B007",
+    "name": "Bagus Setiawan",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829682-r1aln3urg",
+    "createdAt": "2026-02-26T18:50:29.682Z",
+    "updatedAt": "2026-02-26T18:50:29.682Z"
+  },
+  {
+    "nis": "SMP9B008",
+    "name": "Dewi Lestari",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829682-oglt6araw",
+    "createdAt": "2026-02-26T18:50:29.682Z",
+    "updatedAt": "2026-02-26T18:50:29.682Z"
+  },
+  {
+    "nis": "SMP9B009",
+    "name": "Fajar Nugroho",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829682-t3mqa30ar",
+    "createdAt": "2026-02-26T18:50:29.682Z",
+    "updatedAt": "2026-02-26T18:50:29.682Z"
+  },
+  {
+    "nis": "SMP9B010",
+    "name": "Rina Kartika Sari",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829683-z6ny1fzuk",
+    "createdAt": "2026-02-26T18:50:29.683Z",
+    "updatedAt": "2026-02-26T18:50:29.683Z"
+  },
+  {
+    "nis": "SMP9B011",
+    "name": "Yusuf Hidayat",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829683-84xq7cwdc",
+    "createdAt": "2026-02-26T18:50:29.683Z",
+    "updatedAt": "2026-02-26T18:50:29.683Z"
+  },
+  {
+    "nis": "SMP9B012",
+    "name": "Nabila Azzahra",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829683-mf4c29t3u",
+    "createdAt": "2026-02-26T18:50:29.683Z",
+    "updatedAt": "2026-02-26T18:50:29.683Z"
+  },
+  {
+    "nis": "SMP9B013",
+    "name": "Rizky Ramadhan",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829684-w1deyzf25",
+    "createdAt": "2026-02-26T18:50:29.684Z",
+    "updatedAt": "2026-02-26T18:50:29.684Z"
+  },
+  {
+    "nis": "SMP9B014",
+    "name": "Sinta Dewi",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829684-cfy5t3ogq",
+    "createdAt": "2026-02-26T18:50:29.684Z",
+    "updatedAt": "2026-02-26T18:50:29.684Z"
+  },
+  {
+    "nis": "SMP9B015",
+    "name": "Budi Santoso",
+    "classId": "1772131829665-j9me1xuy9",
+    "id": "1772131829684-tltktnq2i",
+    "createdAt": "2026-02-26T18:50:29.684Z",
+    "updatedAt": "2026-02-26T18:50:29.684Z"
+  },
+  {
+    "nis": "MA10A001",
+    "name": "Abdullah Hakim",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829685-lo6wubab0",
+    "createdAt": "2026-02-26T18:50:29.685Z",
+    "updatedAt": "2026-02-26T18:50:29.685Z"
+  },
+  {
+    "nis": "MA10A002",
+    "name": "Fatimah Azzahra",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829685-82t6rwv8u",
+    "createdAt": "2026-02-26T18:50:29.685Z",
+    "updatedAt": "2026-02-26T18:50:29.685Z"
+  },
+  {
+    "nis": "MA10A003",
+    "name": "Umar Faruq",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829686-j4pe4treo",
+    "createdAt": "2026-02-26T18:50:29.686Z",
+    "updatedAt": "2026-02-26T18:50:29.686Z"
+  },
+  {
+    "nis": "MA10A004",
+    "name": "Khadijah Nuraini",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829686-uy0dt36pb",
+    "createdAt": "2026-02-26T18:50:29.686Z",
+    "updatedAt": "2026-02-26T18:50:29.686Z"
+  },
+  {
+    "nis": "MA10A005",
+    "name": "Ali Imran",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829686-49jb0dug7",
+    "createdAt": "2026-02-26T18:50:29.686Z",
+    "updatedAt": "2026-02-26T18:50:29.686Z"
+  },
+  {
+    "nis": "MA10A006",
+    "name": "Aisyah Putri",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829687-u9dnld3x8",
+    "createdAt": "2026-02-26T18:50:29.687Z",
+    "updatedAt": "2026-02-26T18:50:29.687Z"
+  },
+  {
+    "nis": "MA10A007",
+    "name": "Hasan Basri",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829687-iu6f67f70",
+    "createdAt": "2026-02-26T18:50:29.687Z",
+    "updatedAt": "2026-02-26T18:50:29.687Z"
+  },
+  {
+    "nis": "MA10A008",
+    "name": "Zainab Salsabila",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829687-761hntdax",
+    "createdAt": "2026-02-26T18:50:29.687Z",
+    "updatedAt": "2026-02-26T18:50:29.687Z"
+  },
+  {
+    "nis": "MA10A009",
+    "name": "Husain Muhammad",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829687-nuu2eofum",
+    "createdAt": "2026-02-26T18:50:29.687Z",
+    "updatedAt": "2026-02-26T18:50:29.687Z"
+  },
+  {
+    "nis": "MA10A010",
+    "name": "Maryam Jannah",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829688-lmgtb50zq",
+    "createdAt": "2026-02-26T18:50:29.688Z",
+    "updatedAt": "2026-02-26T18:50:29.688Z"
+  },
+  {
+    "nis": "MA10A011",
+    "name": "Bilal Ramadhan",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829688-jumijau2c",
+    "createdAt": "2026-02-26T18:50:29.688Z",
+    "updatedAt": "2026-02-26T18:50:29.688Z"
+  },
+  {
+    "nis": "MA10A012",
+    "name": "Hafshah Indah",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829688-h1gj72qq8",
+    "createdAt": "2026-02-26T18:50:29.688Z",
+    "updatedAt": "2026-02-26T18:50:29.688Z"
+  },
+  {
+    "nis": "MA10A013",
+    "name": "Khalid Yusuf",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829689-d2zolcw2x",
+    "createdAt": "2026-02-26T18:50:29.689Z",
+    "updatedAt": "2026-02-26T18:50:29.689Z"
+  },
+  {
+    "nis": "MA10A014",
+    "name": "Ruqayyah Amina",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829689-ehmjj0nhn",
+    "createdAt": "2026-02-26T18:50:29.689Z",
+    "updatedAt": "2026-02-26T18:50:29.689Z"
+  },
+  {
+    "nis": "MA10A015",
+    "name": "Salman Al-Farisi",
+    "classId": "1772131829666-ocu0xblxf",
+    "id": "1772131829689-qzfmvljdy",
+    "createdAt": "2026-02-26T18:50:29.689Z",
+    "updatedAt": "2026-02-26T18:50:29.689Z"
+  },
+  {
+    "nis": "MA10B001",
+    "name": "Abdullah Hakim",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829690-vo8d5l5cy",
+    "createdAt": "2026-02-26T18:50:29.690Z",
+    "updatedAt": "2026-02-26T18:50:29.690Z"
+  },
+  {
+    "nis": "MA10B002",
+    "name": "Fatimah Azzahra",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829690-hoqtkq62h",
+    "createdAt": "2026-02-26T18:50:29.690Z",
+    "updatedAt": "2026-02-26T18:50:29.690Z"
+  },
+  {
+    "nis": "MA10B003",
+    "name": "Umar Faruq",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829690-2qr7nzooh",
+    "createdAt": "2026-02-26T18:50:29.690Z",
+    "updatedAt": "2026-02-26T18:50:29.690Z"
+  },
+  {
+    "nis": "MA10B004",
+    "name": "Khadijah Nuraini",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829691-52va5v0nq",
+    "createdAt": "2026-02-26T18:50:29.691Z",
+    "updatedAt": "2026-02-26T18:50:29.691Z"
+  },
+  {
+    "nis": "MA10B005",
+    "name": "Ali Imran",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829691-ji0aajf48",
+    "createdAt": "2026-02-26T18:50:29.691Z",
+    "updatedAt": "2026-02-26T18:50:29.691Z"
+  },
+  {
+    "nis": "MA10B006",
+    "name": "Aisyah Putri",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829691-tjktk5uid",
+    "createdAt": "2026-02-26T18:50:29.691Z",
+    "updatedAt": "2026-02-26T18:50:29.691Z"
+  },
+  {
+    "nis": "MA10B007",
+    "name": "Hasan Basri",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829692-wj5nv3iec",
+    "createdAt": "2026-02-26T18:50:29.692Z",
+    "updatedAt": "2026-02-26T18:50:29.692Z"
+  },
+  {
+    "nis": "MA10B008",
+    "name": "Zainab Salsabila",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829692-cj308v4tl",
+    "createdAt": "2026-02-26T18:50:29.692Z",
+    "updatedAt": "2026-02-26T18:50:29.692Z"
+  },
+  {
+    "nis": "MA10B009",
+    "name": "Husain Muhammad",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829693-8cjrfanac",
+    "createdAt": "2026-02-26T18:50:29.693Z",
+    "updatedAt": "2026-02-26T18:50:29.693Z"
+  },
+  {
+    "nis": "MA10B010",
+    "name": "Maryam Jannah",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829693-xatzvoeuy",
+    "createdAt": "2026-02-26T18:50:29.693Z",
+    "updatedAt": "2026-02-26T18:50:29.693Z"
+  },
+  {
+    "nis": "MA10B011",
+    "name": "Bilal Ramadhan",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829694-5n3thhbg4",
+    "createdAt": "2026-02-26T18:50:29.694Z",
+    "updatedAt": "2026-02-26T18:50:29.694Z"
+  },
+  {
+    "nis": "MA10B012",
+    "name": "Hafshah Indah",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829694-6cjwgqk88",
+    "createdAt": "2026-02-26T18:50:29.694Z",
+    "updatedAt": "2026-02-26T18:50:29.694Z"
+  },
+  {
+    "nis": "MA10B013",
+    "name": "Khalid Yusuf",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829694-aes1vy07m",
+    "createdAt": "2026-02-26T18:50:29.694Z",
+    "updatedAt": "2026-02-26T18:50:29.694Z"
+  },
+  {
+    "nis": "MA10B014",
+    "name": "Ruqayyah Amina",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829694-q2irmxfk3",
+    "createdAt": "2026-02-26T18:50:29.694Z",
+    "updatedAt": "2026-02-26T18:50:29.694Z"
+  },
+  {
+    "nis": "MA10B015",
+    "name": "Salman Al-Farisi",
+    "classId": "1772131829666-cjwsgvqy5",
+    "id": "1772131829694-0h078tua2",
+    "createdAt": "2026-02-26T18:50:29.694Z",
+    "updatedAt": "2026-02-26T18:50:29.694Z"
+  },
+  {
+    "nis": "MA11A001",
+    "name": "Abdullah Hakim",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829695-zj8wd7pcj",
+    "createdAt": "2026-02-26T18:50:29.695Z",
+    "updatedAt": "2026-02-26T18:50:29.695Z"
+  },
+  {
+    "nis": "MA11A002",
+    "name": "Fatimah Azzahra",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829695-kj15clhax",
+    "createdAt": "2026-02-26T18:50:29.695Z",
+    "updatedAt": "2026-02-26T18:50:29.695Z"
+  },
+  {
+    "nis": "MA11A003",
+    "name": "Umar Faruq",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829695-dihipzfoj",
+    "createdAt": "2026-02-26T18:50:29.695Z",
+    "updatedAt": "2026-02-26T18:50:29.695Z"
+  },
+  {
+    "nis": "MA11A004",
+    "name": "Khadijah Nuraini",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829695-l35iycyjz",
+    "createdAt": "2026-02-26T18:50:29.695Z",
+    "updatedAt": "2026-02-26T18:50:29.695Z"
+  },
+  {
+    "nis": "MA11A005",
+    "name": "Ali Imran",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829696-2p4ok38fq",
+    "createdAt": "2026-02-26T18:50:29.696Z",
+    "updatedAt": "2026-02-26T18:50:29.696Z"
+  },
+  {
+    "nis": "MA11A006",
+    "name": "Aisyah Putri",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829696-5loxcfj9s",
+    "createdAt": "2026-02-26T18:50:29.696Z",
+    "updatedAt": "2026-02-26T18:50:29.696Z"
+  },
+  {
+    "nis": "MA11A007",
+    "name": "Hasan Basri",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829696-wovn8zqef",
+    "createdAt": "2026-02-26T18:50:29.696Z",
+    "updatedAt": "2026-02-26T18:50:29.696Z"
+  },
+  {
+    "nis": "MA11A008",
+    "name": "Zainab Salsabila",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829696-h2fl9z9ju",
+    "createdAt": "2026-02-26T18:50:29.696Z",
+    "updatedAt": "2026-02-26T18:50:29.696Z"
+  },
+  {
+    "nis": "MA11A009",
+    "name": "Husain Muhammad",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829697-epsrtfi4u",
+    "createdAt": "2026-02-26T18:50:29.697Z",
+    "updatedAt": "2026-02-26T18:50:29.697Z"
+  },
+  {
+    "nis": "MA11A010",
+    "name": "Maryam Jannah",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829697-j2f5h81xm",
+    "createdAt": "2026-02-26T18:50:29.697Z",
+    "updatedAt": "2026-02-26T18:50:29.697Z"
+  },
+  {
+    "nis": "MA11A011",
+    "name": "Bilal Ramadhan",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829697-6y8bxzkzg",
+    "createdAt": "2026-02-26T18:50:29.697Z",
+    "updatedAt": "2026-02-26T18:50:29.697Z"
+  },
+  {
+    "nis": "MA11A012",
+    "name": "Hafshah Indah",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829697-fp4tn4adm",
+    "createdAt": "2026-02-26T18:50:29.697Z",
+    "updatedAt": "2026-02-26T18:50:29.697Z"
+  },
+  {
+    "nis": "MA11A013",
+    "name": "Khalid Yusuf",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829698-wcdqcqipd",
+    "createdAt": "2026-02-26T18:50:29.698Z",
+    "updatedAt": "2026-02-26T18:50:29.698Z"
+  },
+  {
+    "nis": "MA11A014",
+    "name": "Ruqayyah Amina",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829698-sxp6j9k3v",
+    "createdAt": "2026-02-26T18:50:29.698Z",
+    "updatedAt": "2026-02-26T18:50:29.698Z"
+  },
+  {
+    "nis": "MA11A015",
+    "name": "Salman Al-Farisi",
+    "classId": "1772131829666-rjglhncnq",
+    "id": "1772131829698-k8thnwig4",
+    "createdAt": "2026-02-26T18:50:29.698Z",
+    "updatedAt": "2026-02-26T18:50:29.698Z"
+  },
+  {
+    "nis": "MA11B001",
+    "name": "Abdullah Hakim",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829698-5mfue41cq",
+    "createdAt": "2026-02-26T18:50:29.698Z",
+    "updatedAt": "2026-02-26T18:50:29.698Z"
+  },
+  {
+    "nis": "MA11B002",
+    "name": "Fatimah Azzahra",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829699-o98r8xbf2",
+    "createdAt": "2026-02-26T18:50:29.699Z",
+    "updatedAt": "2026-02-26T18:50:29.699Z"
+  },
+  {
+    "nis": "MA11B003",
+    "name": "Umar Faruq",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829699-myz1fx8s4",
+    "createdAt": "2026-02-26T18:50:29.699Z",
+    "updatedAt": "2026-02-26T18:50:29.699Z"
+  },
+  {
+    "nis": "MA11B004",
+    "name": "Khadijah Nuraini",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829699-2b7hnh1nl",
+    "createdAt": "2026-02-26T18:50:29.699Z",
+    "updatedAt": "2026-02-26T18:50:29.699Z"
+  },
+  {
+    "nis": "MA11B005",
+    "name": "Ali Imran",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829699-ng0exkel5",
+    "createdAt": "2026-02-26T18:50:29.699Z",
+    "updatedAt": "2026-02-26T18:50:29.699Z"
+  },
+  {
+    "nis": "MA11B006",
+    "name": "Aisyah Putri",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829700-cjqhavjzi",
+    "createdAt": "2026-02-26T18:50:29.700Z",
+    "updatedAt": "2026-02-26T18:50:29.700Z"
+  },
+  {
+    "nis": "MA11B007",
+    "name": "Hasan Basri",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829700-s2y2z1n9g",
+    "createdAt": "2026-02-26T18:50:29.700Z",
+    "updatedAt": "2026-02-26T18:50:29.700Z"
+  },
+  {
+    "nis": "MA11B008",
+    "name": "Zainab Salsabila",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829700-pgrni03zf",
+    "createdAt": "2026-02-26T18:50:29.700Z",
+    "updatedAt": "2026-02-26T18:50:29.700Z"
+  },
+  {
+    "nis": "MA11B009",
+    "name": "Husain Muhammad",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829700-7ai2rac3f",
+    "createdAt": "2026-02-26T18:50:29.700Z",
+    "updatedAt": "2026-02-26T18:50:29.700Z"
+  },
+  {
+    "nis": "MA11B010",
+    "name": "Maryam Jannah",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829700-wwsx58sre",
+    "createdAt": "2026-02-26T18:50:29.700Z",
+    "updatedAt": "2026-02-26T18:50:29.700Z"
+  },
+  {
+    "nis": "MA11B011",
+    "name": "Bilal Ramadhan",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829701-inlcrcrig",
+    "createdAt": "2026-02-26T18:50:29.701Z",
+    "updatedAt": "2026-02-26T18:50:29.701Z"
+  },
+  {
+    "nis": "MA11B012",
+    "name": "Hafshah Indah",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829701-xo3uh08fy",
+    "createdAt": "2026-02-26T18:50:29.701Z",
+    "updatedAt": "2026-02-26T18:50:29.701Z"
+  },
+  {
+    "nis": "MA11B013",
+    "name": "Khalid Yusuf",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829702-e2yw9hzrq",
+    "createdAt": "2026-02-26T18:50:29.702Z",
+    "updatedAt": "2026-02-26T18:50:29.702Z"
+  },
+  {
+    "nis": "MA11B014",
+    "name": "Ruqayyah Amina",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829702-v8cn5uwqa",
+    "createdAt": "2026-02-26T18:50:29.702Z",
+    "updatedAt": "2026-02-26T18:50:29.702Z"
+  },
+  {
+    "nis": "MA11B015",
+    "name": "Salman Al-Farisi",
+    "classId": "1772131829666-alo9gu5z8",
+    "id": "1772131829702-ls84jto4q",
+    "createdAt": "2026-02-26T18:50:29.702Z",
+    "updatedAt": "2026-02-26T18:50:29.702Z"
+  },
+  {
+    "nis": "MA12A001",
+    "name": "Abdullah Hakim",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829703-6hpoibkl8",
+    "createdAt": "2026-02-26T18:50:29.703Z",
+    "updatedAt": "2026-02-26T18:50:29.703Z"
+  },
+  {
+    "nis": "MA12A002",
+    "name": "Fatimah Azzahra",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829703-igdv6zz8n",
+    "createdAt": "2026-02-26T18:50:29.703Z",
+    "updatedAt": "2026-02-26T18:50:29.703Z"
+  },
+  {
+    "nis": "MA12A003",
+    "name": "Umar Faruq",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829704-volmiah8p",
+    "createdAt": "2026-02-26T18:50:29.704Z",
+    "updatedAt": "2026-02-26T18:50:29.704Z"
+  },
+  {
+    "nis": "MA12A004",
+    "name": "Khadijah Nuraini",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829704-wuutq23tq",
+    "createdAt": "2026-02-26T18:50:29.704Z",
+    "updatedAt": "2026-02-26T18:50:29.704Z"
+  },
+  {
+    "nis": "MA12A005",
+    "name": "Ali Imran",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829705-7sepqbg9s",
+    "createdAt": "2026-02-26T18:50:29.705Z",
+    "updatedAt": "2026-02-26T18:50:29.705Z"
+  },
+  {
+    "nis": "MA12A006",
+    "name": "Aisyah Putri",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829705-fc0on4h6y",
+    "createdAt": "2026-02-26T18:50:29.705Z",
+    "updatedAt": "2026-02-26T18:50:29.705Z"
+  },
+  {
+    "nis": "MA12A007",
+    "name": "Hasan Basri",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829706-vbpj3w78t",
+    "createdAt": "2026-02-26T18:50:29.706Z",
+    "updatedAt": "2026-02-26T18:50:29.706Z"
+  },
+  {
+    "nis": "MA12A008",
+    "name": "Zainab Salsabila",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829706-u01nle4fa",
+    "createdAt": "2026-02-26T18:50:29.706Z",
+    "updatedAt": "2026-02-26T18:50:29.706Z"
+  },
+  {
+    "nis": "MA12A009",
+    "name": "Husain Muhammad",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829706-hgbfx97w5",
+    "createdAt": "2026-02-26T18:50:29.706Z",
+    "updatedAt": "2026-02-26T18:50:29.706Z"
+  },
+  {
+    "nis": "MA12A010",
+    "name": "Maryam Jannah",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829707-ifa8kosnv",
+    "createdAt": "2026-02-26T18:50:29.707Z",
+    "updatedAt": "2026-02-26T18:50:29.707Z"
+  },
+  {
+    "nis": "MA12A011",
+    "name": "Bilal Ramadhan",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829707-g6bcw9yrk",
+    "createdAt": "2026-02-26T18:50:29.707Z",
+    "updatedAt": "2026-02-26T18:50:29.707Z"
+  },
+  {
+    "nis": "MA12A012",
+    "name": "Hafshah Indah",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829708-mnwiw4wdg",
+    "createdAt": "2026-02-26T18:50:29.708Z",
+    "updatedAt": "2026-02-26T18:50:29.708Z"
+  },
+  {
+    "nis": "MA12A013",
+    "name": "Khalid Yusuf",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829709-je7rvgfdh",
+    "createdAt": "2026-02-26T18:50:29.709Z",
+    "updatedAt": "2026-02-26T18:50:29.709Z"
+  },
+  {
+    "nis": "MA12A014",
+    "name": "Ruqayyah Amina",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829709-04d87r41w",
+    "createdAt": "2026-02-26T18:50:29.709Z",
+    "updatedAt": "2026-02-26T18:50:29.709Z"
+  },
+  {
+    "nis": "MA12A015",
+    "name": "Salman Al-Farisi",
+    "classId": "1772131829666-6oi9347p7",
+    "id": "1772131829709-ipa25ujjq",
+    "createdAt": "2026-02-26T18:50:29.709Z",
+    "updatedAt": "2026-02-26T18:50:29.709Z"
+  },
+  {
+    "nis": "MA12B001",
+    "name": "Abdullah Hakim",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829710-pmd635a12",
+    "createdAt": "2026-02-26T18:50:29.710Z",
+    "updatedAt": "2026-02-26T18:50:29.710Z"
+  },
+  {
+    "nis": "MA12B002",
+    "name": "Fatimah Azzahra",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829710-orscuqd7z",
+    "createdAt": "2026-02-26T18:50:29.710Z",
+    "updatedAt": "2026-02-26T18:50:29.710Z"
+  },
+  {
+    "nis": "MA12B003",
+    "name": "Umar Faruq",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829711-i9ja8t9kc",
+    "createdAt": "2026-02-26T18:50:29.711Z",
+    "updatedAt": "2026-02-26T18:50:29.711Z"
+  },
+  {
+    "nis": "MA12B004",
+    "name": "Khadijah Nuraini",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829711-szg4fqor0",
+    "createdAt": "2026-02-26T18:50:29.711Z",
+    "updatedAt": "2026-02-26T18:50:29.711Z"
+  },
+  {
+    "nis": "MA12B005",
+    "name": "Ali Imran",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829711-0o4q4r98d",
+    "createdAt": "2026-02-26T18:50:29.711Z",
+    "updatedAt": "2026-02-26T18:50:29.711Z"
+  },
+  {
+    "nis": "MA12B006",
+    "name": "Aisyah Putri",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829712-d19bna47u",
+    "createdAt": "2026-02-26T18:50:29.712Z",
+    "updatedAt": "2026-02-26T18:50:29.712Z"
+  },
+  {
+    "nis": "MA12B007",
+    "name": "Hasan Basri",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829712-4l70yqi8k",
+    "createdAt": "2026-02-26T18:50:29.712Z",
+    "updatedAt": "2026-02-26T18:50:29.712Z"
+  },
+  {
+    "nis": "MA12B008",
+    "name": "Zainab Salsabila",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829712-8nbgbajfl",
+    "createdAt": "2026-02-26T18:50:29.712Z",
+    "updatedAt": "2026-02-26T18:50:29.712Z"
+  },
+  {
+    "nis": "MA12B009",
+    "name": "Husain Muhammad",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829712-grzfqsouv",
+    "createdAt": "2026-02-26T18:50:29.712Z",
+    "updatedAt": "2026-02-26T18:50:29.712Z"
+  },
+  {
+    "nis": "MA12B010",
+    "name": "Maryam Jannah",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829713-og4zpdhsn",
+    "createdAt": "2026-02-26T18:50:29.713Z",
+    "updatedAt": "2026-02-26T18:50:29.713Z"
+  },
+  {
+    "nis": "MA12B011",
+    "name": "Bilal Ramadhan",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829713-t6dysrkcn",
+    "createdAt": "2026-02-26T18:50:29.713Z",
+    "updatedAt": "2026-02-26T18:50:29.713Z"
+  },
+  {
+    "nis": "MA12B012",
+    "name": "Hafshah Indah",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829713-21dfjbfk9",
+    "createdAt": "2026-02-26T18:50:29.713Z",
+    "updatedAt": "2026-02-26T18:50:29.713Z"
+  },
+  {
+    "nis": "MA12B013",
+    "name": "Khalid Yusuf",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829713-orftj3sg8",
+    "createdAt": "2026-02-26T18:50:29.713Z",
+    "updatedAt": "2026-02-26T18:50:29.713Z"
+  },
+  {
+    "nis": "MA12B014",
+    "name": "Ruqayyah Amina",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829714-popuw6dln",
+    "createdAt": "2026-02-26T18:50:29.714Z",
+    "updatedAt": "2026-02-26T18:50:29.714Z"
+  },
+  {
+    "nis": "MA12B015",
+    "name": "Salman Al-Farisi",
+    "classId": "1772131829666-21hahoub8",
+    "id": "1772131829714-5avc87und",
+    "createdAt": "2026-02-26T18:50:29.714Z",
+    "updatedAt": "2026-02-26T18:50:29.714Z"
+  }
+]

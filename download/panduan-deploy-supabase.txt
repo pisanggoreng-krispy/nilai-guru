@@ -1,0 +1,117 @@
+================================================================================
+                    PANDUAN DEPLOY KE VERCEL DENGAN SUPABASE
+================================================================================
+
+--------------------------------------------------------------------------------
+LANGKAH 1: JALANKAN SQL DI SUPABASE (JIKA BELUM)
+--------------------------------------------------------------------------------
+1. Buka https://supabase.com dan login
+2. Pilih project Anda
+3. Klik SQL Editor di menu kiri
+4. Klik "New query"
+5. Copy-paste seluruh SQL dari file "sql-schema.txt" yang disediakan
+6. Klik "Run"
+
+--------------------------------------------------------------------------------
+LANGKAH 2: UPDATE KODE LOKAL
+--------------------------------------------------------------------------------
+1. Download file nilai-guru-supabase.zip
+2. Extract ke folder baru, misal: D:\Darul Arqom\KAMAD\Aplikasi Sekolah\nilai-guru-baru
+3. Atau replace file di folder lama dengan file yang baru
+
+--------------------------------------------------------------------------------
+LANGKAH 3: PUSH KE GITHUB
+--------------------------------------------------------------------------------
+Buka CMD/PowerShell di folder project, jalankan:
+
+git init
+
+git add .
+
+git commit -m "Update: Migrasi ke Supabase"
+
+git branch -M main
+
+git remote remove origin    (jika sudah ada remote sebelumnya)
+
+git remote add origin https://github.com/pisanggoreng-krispy/nilai-guru
+
+git push -u origin main --force
+
+--------------------------------------------------------------------------------
+LANGKAH 4: SET ENVIRONMENT VARIABLES DI VERCEL
+--------------------------------------------------------------------------------
+1. Buka https://vercel.com dan login
+2. Pilih project "nilai-guru"
+3. Klik tab "Settings"
+4. Klik "Environment Variables" di menu kiri
+5. Tambahkan variabel berikut:
+
+   Name: SUPABASE_URL
+   Value: https://zgrqtxmikthqhhiiejvh.supabase.co
+
+   Name: SUPABASE_ANON_KEY
+   Value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpncnF0eG1pa3RocWhoaWllanZoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjEyMzE4MywiZXhwIjoyMDg3Njk5MTgzfQ.ceebOdYHxZu5UxASSOFug3eKOSB3zSvFc_rOpl3fwLY
+
+   Name: JWT_SECRET
+   Value: your-super-secret-jwt-key-change-in-production-2024
+
+6. Klik "Save" untuk setiap variabel
+
+--------------------------------------------------------------------------------
+LANGKAH 5: REDEPLOY DI VERCEL
+--------------------------------------------------------------------------------
+1. Klik tab "Deployments"
+2. Klik tombol "..." (tiga titik) di deployment terbaru
+3. Pilih "Redeploy"
+4. Atau push commit baru ke GitHub untuk trigger deploy otomatis
+
+--------------------------------------------------------------------------------
+LANGKAH 6: TEST APLIKASI
+--------------------------------------------------------------------------------
+Buka URL Vercel Anda, login dengan:
+
+Email: admin@sekolah.com
+Password: password123
+
+--------------------------------------------------------------------------------
+                         TROUBLESHOOTING
+--------------------------------------------------------------------------------
+
+❌ Error: "Failed to connect to Supabase"
+✅ Solusi: 
+   - Periksa SUPABASE_URL dan SUPABASE_ANON_KEY di Environment Variables
+   - Pastikan tidak ada spasi di awal/akhir value
+
+❌ Error: "relation "users" does not exist"
+✅ Solusi: 
+   - SQL belum dijalankan di Supabase
+   - Jalankan ulang SQL dari file sql-schema.txt
+
+❌ Login gagal
+✅ Solusi: 
+   - Pastikan tabel users sudah ada data
+   - Jalankan ulang INSERT INTO users di SQL
+
+❌ Error: "JWT_SECRET is not defined"
+✅ Solusi: 
+   - Tambahkan JWT_SECRET di Environment Variables Vercel
+
+--------------------------------------------------------------------------------
+                         AKUN LOGIN DEFAULT
+--------------------------------------------------------------------------------
+
+| Email              | Password    | Role        |
+|--------------------|-------------|-------------|
+| admin@sekolah.com  | password123 | ADMIN       |
+| budi@sekolah.com   | password123 | GURU_MAPEL  |
+| sri@sekolah.com    | password123 | WALI_KELAS  |
+| ahmad@sekolah.com  | password123 | GURU_MAPEL  |
+| dewi@sekolah.com   | password123 | WALI_KELAS  |
+| hendra@sekolah.com | password123 | GURU_MAPEL  |
+| nur@sekolah.com    | password123 | WALI_KELAS  |
+| eko@sekolah.com    | password123 | GURU_MAPEL  |
+
+================================================================================
+                              SELESAI
+================================================================================

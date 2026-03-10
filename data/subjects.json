@@ -1,0 +1,149 @@
+[
+  {
+    "name": "Matematika",
+    "jenjang": "SMP",
+    "id": "1772131829661-0efmkxrs3",
+    "createdAt": "2026-02-26T18:50:29.661Z",
+    "updatedAt": "2026-02-26T18:50:29.661Z"
+  },
+  {
+    "name": "Bahasa Indonesia",
+    "jenjang": "SMP",
+    "id": "1772131829661-m14pg4hwi",
+    "createdAt": "2026-02-26T18:50:29.661Z",
+    "updatedAt": "2026-02-26T18:50:29.661Z"
+  },
+  {
+    "name": "Bahasa Inggris",
+    "jenjang": "SMP",
+    "id": "1772131829661-n645p28iw",
+    "createdAt": "2026-02-26T18:50:29.661Z",
+    "updatedAt": "2026-02-26T18:50:29.661Z"
+  },
+  {
+    "name": "IPA",
+    "jenjang": "SMP",
+    "id": "1772131829661-djbs7iy30",
+    "createdAt": "2026-02-26T18:50:29.661Z",
+    "updatedAt": "2026-02-26T18:50:29.661Z"
+  },
+  {
+    "name": "IPS",
+    "jenjang": "SMP",
+    "id": "1772131829661-gnc3ltv0t",
+    "createdAt": "2026-02-26T18:50:29.661Z",
+    "updatedAt": "2026-02-26T18:50:29.661Z"
+  },
+  {
+    "name": "PKN",
+    "jenjang": "SMP",
+    "id": "1772131829661-uizrsilpr",
+    "createdAt": "2026-02-26T18:50:29.661Z",
+    "updatedAt": "2026-02-26T18:50:29.661Z"
+  },
+  {
+    "name": "Pendidikan Agama",
+    "jenjang": "SMP",
+    "id": "1772131829661-9myqjwio0",
+    "createdAt": "2026-02-26T18:50:29.661Z",
+    "updatedAt": "2026-02-26T18:50:29.661Z"
+  },
+  {
+    "name": "Seni Budaya",
+    "jenjang": "SMP",
+    "id": "1772131829662-dueeq4klb",
+    "createdAt": "2026-02-26T18:50:29.662Z",
+    "updatedAt": "2026-02-26T18:50:29.662Z"
+  },
+  {
+    "name": "PJOK",
+    "jenjang": "SMP",
+    "id": "1772131829662-19uto06pb",
+    "createdAt": "2026-02-26T18:50:29.662Z",
+    "updatedAt": "2026-02-26T18:50:29.662Z"
+  },
+  {
+    "name": "Matematika",
+    "jenjang": "MA",
+    "id": "1772131829662-fgtv4zqrc",
+    "createdAt": "2026-02-26T18:50:29.662Z",
+    "updatedAt": "2026-02-26T18:50:29.662Z"
+  },
+  {
+    "name": "Bahasa Indonesia",
+    "jenjang": "MA",
+    "id": "1772131829662-q9xva5liw",
+    "createdAt": "2026-02-26T18:50:29.662Z",
+    "updatedAt": "2026-02-26T18:50:29.662Z"
+  },
+  {
+    "name": "Bahasa Inggris",
+    "jenjang": "MA",
+    "id": "1772131829663-9xly1i5v2",
+    "createdAt": "2026-02-26T18:50:29.663Z",
+    "updatedAt": "2026-02-26T18:50:29.663Z"
+  },
+  {
+    "name": "Fisika",
+    "jenjang": "MA",
+    "id": "1772131829663-na304cbsl",
+    "createdAt": "2026-02-26T18:50:29.663Z",
+    "updatedAt": "2026-02-26T18:50:29.663Z"
+  },
+  {
+    "name": "Kimia",
+    "jenjang": "MA",
+    "id": "1772131829663-a30zkqnvz",
+    "createdAt": "2026-02-26T18:50:29.663Z",
+    "updatedAt": "2026-02-26T18:50:29.663Z"
+  },
+  {
+    "name": "Biologi",
+    "jenjang": "MA",
+    "id": "1772131829663-9viu7fti7",
+    "createdAt": "2026-02-26T18:50:29.663Z",
+    "updatedAt": "2026-02-26T18:50:29.663Z"
+  },
+  {
+    "name": "Sejarah",
+    "jenjang": "MA",
+    "id": "1772131829663-zjsji9kg5",
+    "createdAt": "2026-02-26T18:50:29.663Z",
+    "updatedAt": "2026-02-26T18:50:29.663Z"
+  },
+  {
+    "name": "Geografi",
+    "jenjang": "MA",
+    "id": "1772131829663-4yodhwq38",
+    "createdAt": "2026-02-26T18:50:29.663Z",
+    "updatedAt": "2026-02-26T18:50:29.663Z"
+  },
+  {
+    "name": "Ekonomi",
+    "jenjang": "MA",
+    "id": "1772131829663-sai8lipl3",
+    "createdAt": "2026-02-26T18:50:29.663Z",
+    "updatedAt": "2026-02-26T18:50:29.663Z"
+  },
+  {
+    "name": "PKN",
+    "jenjang": "MA",
+    "id": "1772131829664-7rm2w3nod",
+    "createdAt": "2026-02-26T18:50:29.664Z",
+    "updatedAt": "2026-02-26T18:50:29.664Z"
+  },
+  {
+    "name": "Pendidikan Agama",
+    "jenjang": "MA",
+    "id": "1772131829664-njpm6zbb2",
+    "createdAt": "2026-02-26T18:50:29.664Z",
+    "updatedAt": "2026-02-26T18:50:29.664Z"
+  },
+  {
+    "name": "Bahasa Arab",
+    "jenjang": "MA",
+    "id": "1772131829664-kosswbug3",
+    "createdAt": "2026-02-26T18:50:29.664Z",
+    "updatedAt": "2026-02-26T18:50:29.664Z"
+  }
+]
