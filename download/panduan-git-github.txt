@@ -1,0 +1,147 @@
+================================================================================
+                    PANDUAN LENGKAP PUSH KE GITHUB
+                      (Dari Awal Pertama Kali)
+================================================================================
+
+--------------------------------------------------------------------------------
+LANGKAH 1: INSTALL GIT (Jika Belum Terinstall)
+--------------------------------------------------------------------------------
+1. Download Git dari: https://git-scm.com/download/win
+2. Jalankan installer, klik Next sampai selesai
+3. Buka CMD/PowerShell, ketik: git --version
+   (Jika muncul versi, berarti sudah terinstall)
+
+--------------------------------------------------------------------------------
+LANGKAH 2: BUAT AKUN GITHUB
+--------------------------------------------------------------------------------
+1. Buka https://github.com
+2. Klik "Sign Up"
+3. Isi Username, Email, Password
+4. Verifikasi email
+
+--------------------------------------------------------------------------------
+LANGKAH 3: BUAT REPOSITORY BARU DI GITHUB
+--------------------------------------------------------------------------------
+1. Login ke GitHub
+2. Klik tombol "+" di pojok kanan atas, pilih "New repository"
+3. Isi:
+   - Repository name: nilai-guru
+   - Description: Aplikasi Input Nilai Guru (opsional)
+   - Pilih: Public atau Private
+   - ⚠️ JANGAN centang "Add a README file"
+   - ⚠️ JANGAN centang "Add .gitignore"
+   - ⚠️ JANGAN pilih License
+4. Klik "Create repository"
+
+--------------------------------------------------------------------------------
+LANGKAH 4: BUKA FOLDER PROYEK DI CMD/POWERSHELL
+--------------------------------------------------------------------------------
+Cara 1 - Via File Explorer:
+1. Buka File Explorer
+2. Masuk ke folder: D:\Darul Arqom\KAMAD\Aplikasi Sekolah\nilai-guru
+3. Ketik "cmd" di address bar, tekan Enter
+
+Cara 2 - Via CMD:
+1. Buka CMD (Win + R, ketik cmd, Enter)
+2. Ketik: cd "D:\Darul Arqom\KAMAD\Aplikasi Sekolah\nilai-guru"
+
+--------------------------------------------------------------------------------
+LANGKAH 5: INISIALISASI GIT DI FOLDER PROYEK
+--------------------------------------------------------------------------------
+Jalankan perintah berikut satu per satu:
+
+git init
+
+git add .
+
+git commit -m "Initial commit - Aplikasi Input Nilai Guru"
+
+--------------------------------------------------------------------------------
+LANGKAH 6: HUBUNGKAN KE REPOSITORY GITHUB
+--------------------------------------------------------------------------------
+Ganti USERNAME dengan username GitHub Anda:
+
+git branch -M main
+
+git remote add origin https://github.com/USERNAME/nilai-guru
+
+Contoh jika username Anda "pisanggoreng-krispy":
+git remote add origin https://github.com/pisanggoreng-krispy/nilai-guru
+
+--------------------------------------------------------------------------------
+LANGKAH 7: PUSH KE GITHUB
+--------------------------------------------------------------------------------
+
+⚡ JIKA REPOSITORY KOSONG (tidak ada README saat create):
+git push -u origin main
+
+⚡ JIKA REPOSITORY SUDAH ADA ISINYA (ada README/dll):
+git pull origin main --allow-unrelated-histories
+git push -u origin main
+
+⚡ JIKA INGIN MENIMPA SEMUA DI GITHUB (force):
+git push -u origin main --force
+
+--------------------------------------------------------------------------------
+LANGKAH 8: VERIFIKASI
+--------------------------------------------------------------------------------
+1. Buka https://github.com/USERNAME/nilai-guru
+2. Refresh halaman
+3. Semua file harusnya sudah muncul
+
+--------------------------------------------------------------------------------
+LANGKAH 9: DEPLOY KE VERCEL
+--------------------------------------------------------------------------------
+1. Buka https://vercel.com
+2. Klik "Sign Up" / "Log In"
+3. Pilih "Continue with GitHub"
+4. Setelah login, klik "Add New..." -> "Project"
+5. Pilih repository "nilai-guru"
+6. Klik "Import"
+7. Klik "Deploy"
+8. Tunggu beberapa menit
+9. Selesai! Aplikasi bisa diakses via URL dari Vercel
+
+================================================================================
+                           TROUBLESHOOTING
+================================================================================
+
+❌ Error: "fatal: not a git repository"
+✅ Solusi: Jalankan "git init" dulu
+
+❌ Error: "fatal: 'origin' already exists"
+✅ Solusi: Jalankan dulu "git remote remove origin", lalu ulangi "git remote add origin ..."
+
+❌ Error: "! [rejected] main -> main (fetch first)"
+✅ Solusi: Jalankan "git pull origin main --allow-unrelated-histories" lalu push lagi
+
+❌ Error: "fatal: 'main' does not appear to be a git repository"
+✅ Solusi: Perintah salah, gunakan "git push -u origin main" (ada -u bukan -origin)
+
+❌ Error: "Authentication failed"
+✅ Solusi: 
+   - Buat Personal Access Token di GitHub
+   - Settings -> Developer settings -> Personal access tokens -> Tokens (classic)
+   - Generate new token, centang semua permission
+   - Saat push, gunakan token sebagai password
+
+❌ Error: "src refspec main does not match any"
+✅ Solusi: Pastikan sudah commit dengan "git commit -m "pesan""
+
+================================================================================
+                         PERINTAH GIT YANG SERING DIGUNAKAN
+================================================================================
+
+git status              -> Lihat status file (modified/new/deleted)
+git add .               -> Tambahkan semua file ke staging
+git add filename.txt    -> Tambahkan file tertentu
+git commit -m "pesan"   -> Simpan perubahan dengan pesan
+git push                -> Kirim ke GitHub
+git pull                -> Ambil perubahan dari GitHub
+git log                 -> Lihat history commit
+git remote -v           -> Lihat remote repository yang terhubung
+git branch              -> Lihat branch yang ada
+
+================================================================================
+                              SELESAI
+================================================================================

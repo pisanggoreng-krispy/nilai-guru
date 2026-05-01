@@ -1,0 +1,110 @@
+[
+  {
+    "name": "7A",
+    "jenjang": "SMP",
+    "grade": 7,
+    "waliKelasId": "1772131829659-3gweih4na",
+    "id": "1772131829664-idsmwotrv",
+    "createdAt": "2026-02-26T18:50:29.664Z",
+    "updatedAt": "2026-02-26T18:50:29.664Z"
+  },
+  {
+    "name": "7B",
+    "jenjang": "SMP",
+    "grade": 7,
+    "waliKelasId": "1772131829659-6aygr55ix",
+    "id": "1772131829665-1to37okkf",
+    "createdAt": "2026-02-26T18:50:29.665Z",
+    "updatedAt": "2026-02-26T18:50:29.665Z"
+  },
+  {
+    "name": "8A",
+    "jenjang": "SMP",
+    "grade": 8,
+    "waliKelasId": "1772131829660-fxtmq1sop",
+    "id": "1772131829665-3cwyv6fna",
+    "createdAt": "2026-02-26T18:50:29.665Z",
+    "updatedAt": "2026-02-26T18:50:29.665Z"
+  },
+  {
+    "name": "8B",
+    "jenjang": "SMP",
+    "grade": 8,
+    "waliKelasId": "1772131829659-3gweih4na",
+    "id": "1772131829665-bgt39rx7x",
+    "createdAt": "2026-02-26T18:50:29.665Z",
+    "updatedAt": "2026-02-26T18:50:29.665Z"
+  },
+  {
+    "name": "9A",
+    "jenjang": "SMP",
+    "grade": 9,
+    "waliKelasId": "1772131829659-6aygr55ix",
+    "id": "1772131829665-1v8ur576v",
+    "createdAt": "2026-02-26T18:50:29.665Z",
+    "updatedAt": "2026-02-26T18:50:29.665Z"
+  },
+  {
+    "name": "9B",
+    "jenjang": "SMP",
+    "grade": 9,
+    "waliKelasId": "1772131829660-fxtmq1sop",
+    "id": "1772131829665-j9me1xuy9",
+    "createdAt": "2026-02-26T18:50:29.665Z",
+    "updatedAt": "2026-02-26T18:50:29.665Z"
+  },
+  {
+    "name": "10A",
+    "jenjang": "MA",
+    "grade": 10,
+    "waliKelasId": "1772131829659-3gweih4na",
+    "id": "1772131829666-ocu0xblxf",
+    "createdAt": "2026-02-26T18:50:29.666Z",
+    "updatedAt": "2026-02-26T18:50:29.666Z"
+  },
+  {
+    "name": "10B",
+    "jenjang": "MA",
+    "grade": 10,
+    "waliKelasId": "1772131829659-6aygr55ix",
+    "id": "1772131829666-cjwsgvqy5",
+    "createdAt": "2026-02-26T18:50:29.666Z",
+    "updatedAt": "2026-02-26T18:50:29.666Z"
+  },
+  {
+    "name": "11A",
+    "jenjang": "MA",
+    "grade": 11,
+    "waliKelasId": "1772131829660-fxtmq1sop",
+    "id": "1772131829666-rjglhncnq",
+    "createdAt": "2026-02-26T18:50:29.666Z",
+    "updatedAt": "2026-02-26T18:50:29.666Z"
+  },
+  {
+    "name": "11B",
+    "jenjang": "MA",
+    "grade": 11,
+    "waliKelasId": "1772131829659-3gweih4na",
+    "id": "1772131829666-alo9gu5z8",
+    "createdAt": "2026-02-26T18:50:29.666Z",
+    "updatedAt": "2026-02-26T18:50:29.666Z"
+  },
+  {
+    "name": "12A",
+    "jenjang": "MA",
+    "grade": 12,
+    "waliKelasId": "1772131829659-6aygr55ix",
+    "id": "1772131829666-6oi9347p7",
+    "createdAt": "2026-02-26T18:50:29.666Z",
+    "updatedAt": "2026-02-26T18:50:29.666Z"
+  },
+  {
+    "name": "12B",
+    "jenjang": "MA",
+    "grade": 12,
+    "waliKelasId": "1772131829660-fxtmq1sop",
+    "id": "1772131829666-21hahoub8",
+    "createdAt": "2026-02-26T18:50:29.666Z",
+    "updatedAt": "2026-02-26T18:50:29.666Z"
+  }
+]

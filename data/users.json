@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Admin User",
+    "email": "admin@sekolah.com",
+    "password": "$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq",
+    "role": "ADMIN",
+    "id": "1772131829659-tx0t0vocs",
+    "createdAt": "2026-02-26T18:50:29.659Z",
+    "updatedAt": "2026-02-26T18:50:29.659Z"
+  },
+  {
+    "name": "Budi Hartono, S.Pd",
+    "email": "budi@sekolah.com",
+    "password": "$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq",
+    "role": "GURU_MAPEL",
+    "id": "1772131829659-hch820ibq",
+    "createdAt": "2026-02-26T18:50:29.659Z",
+    "updatedAt": "2026-02-26T18:50:29.659Z"
+  },
+  {
+    "name": "Sri Wahyuni, S.Pd",
+    "email": "sri@sekolah.com",
+    "password": "$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq",
+    "role": "WALI_KELAS",
+    "id": "1772131829659-3gweih4na",
+    "createdAt": "2026-02-26T18:50:29.659Z",
+    "updatedAt": "2026-02-26T18:50:29.659Z"
+  },
+  {
+    "name": "Ahmad Fauzi, M.Pd",
+    "email": "ahmad@sekolah.com",
+    "password": "$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq",
+    "role": "GURU_MAPEL",
+    "id": "1772131829659-6ydc1d8n4",
+    "createdAt": "2026-02-26T18:50:29.659Z",
+    "updatedAt": "2026-02-26T18:50:29.659Z"
+  },
+  {
+    "name": "Dewi Sartika, S.Pd",
+    "email": "dewi@sekolah.com",
+    "password": "$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq",
+    "role": "WALI_KELAS",
+    "id": "1772131829659-6aygr55ix",
+    "createdAt": "2026-02-26T18:50:29.659Z",
+    "updatedAt": "2026-02-26T18:50:29.659Z"
+  },
+  {
+    "name": "Hendra Wijaya, S.Pd",
+    "email": "hendra@sekolah.com",
+    "password": "$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq",
+    "role": "GURU_MAPEL",
+    "id": "1772131829660-8tip5kavt",
+    "createdAt": "2026-02-26T18:50:29.660Z",
+    "updatedAt": "2026-02-26T18:50:29.660Z"
+  },
+  {
+    "name": "Nur Hidayah, S.Pd",
+    "email": "nur@sekolah.com",
+    "password": "$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq",
+    "role": "WALI_KELAS",
+    "id": "1772131829660-fxtmq1sop",
+    "createdAt": "2026-02-26T18:50:29.660Z",
+    "updatedAt": "2026-02-26T18:50:29.660Z"
+  },
+  {
+    "name": "Eko Prasetyo, M.Pd",
+    "email": "eko@sekolah.com",
+    "password": "$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq",
+    "role": "GURU_MAPEL",
+    "id": "1772131829660-3lm2muqip",
+    "createdAt": "2026-02-26T18:50:29.660Z",
+    "updatedAt": "2026-02-26T18:50:29.660Z"
+  }
+]

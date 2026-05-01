@@ -1,0 +1,178 @@
+================================================================================
+                    SQL SCHEMA UNTUK SUPABASE
+                    Copy-paste seluruh SQL ke SQL Editor Supabase
+================================================================================
+
+-- Enable UUID extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Drop tables if exist (untuk clean install)
+DROP TABLE IF EXISTS grades CASCADE;
+DROP TABLE IF EXISTS teacher_subjects CASCADE;
+DROP TABLE IF EXISTS students CASCADE;
+DROP TABLE IF EXISTS subjects CASCADE;
+DROP TABLE IF EXISTS classes CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
+-- Users table
+CREATE TABLE users (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  role TEXT NOT NULL CHECK (role IN ('ADMIN', 'GURU_MAPEL', 'WALI_KELAS')),
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
+);
+
+-- Classes table
+CREATE TABLE classes (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  level TEXT NOT NULL CHECK (level IN ('SMP', 'MA')),
+  "academicYear" TEXT NOT NULL,
+  "waliKelasId" TEXT REFERENCES users(id),
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
+);
+
+-- Subjects table
+CREATE TABLE subjects (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  code TEXT UNIQUE NOT NULL,
+  level TEXT NOT NULL CHECK (level IN ('SMP', 'MA')),
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
+);
+
+-- Students table
+CREATE TABLE students (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  nisn TEXT UNIQUE NOT NULL,
+  "classId" TEXT REFERENCES classes(id),
+  gender TEXT CHECK (gender IN ('L', 'P')),
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
+);
+
+-- Teacher Subjects table
+CREATE TABLE teacher_subjects (
+  id TEXT PRIMARY KEY,
+  "userId" TEXT REFERENCES users(id),
+  "subjectId" TEXT REFERENCES subjects(id),
+  "classId" TEXT REFERENCES classes(id),
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW(),
+  UNIQUE("userId", "subjectId", "classId")
+);
+
+-- Grades table
+CREATE TABLE grades (
+  id TEXT PRIMARY KEY,
+  "studentId" TEXT REFERENCES students(id),
+  "subjectId" TEXT REFERENCES subjects(id),
+  "tugas1" DECIMAL(5,2),
+  "tugas2" DECIMAL(5,2),
+  "ulangan1" DECIMAL(5,2),
+  "ulangan2" DECIMAL(5,2),
+  "midTest" DECIMAL(5,2),
+  "finalTest" DECIMAL(5,2),
+  "finalGrade" DECIMAL(5,2),
+  "academicYear" TEXT NOT NULL,
+  semester INTEGER DEFAULT 1,
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW(),
+  UNIQUE("studentId", "subjectId", "academicYear", semester)
+);
+
+-- Insert default users (password: password123)
+INSERT INTO users (id, name, email, password, role) VALUES
+('user-admin', 'Admin User', 'admin@sekolah.com', '$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq', 'ADMIN'),
+('user-budi', 'Budi Hartono, S.Pd', 'budi@sekolah.com', '$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq', 'GURU_MAPEL'),
+('user-sri', 'Sri Wahyuni, S.Pd', 'sri@sekolah.com', '$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq', 'WALI_KELAS'),
+('user-ahmad', 'Ahmad Fauzi, M.Pd', 'ahmad@sekolah.com', '$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq', 'GURU_MAPEL'),
+('user-dewi', 'Dewi Sartika, S.Pd', 'dewi@sekolah.com', '$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq', 'WALI_KELAS'),
+('user-hendra', 'Hendra Wijaya, S.Pd', 'hendra@sekolah.com', '$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq', 'GURU_MAPEL'),
+('user-nur', 'Nur Hidayah, S.Pd', 'nur@sekolah.com', '$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq', 'WALI_KELAS'),
+('user-eko', 'Eko Prasetyo, M.Pd', 'eko@sekolah.com', '$2b$10$h9DRdWsyirn/UdkN/9J36eMsxZC9TPIkTNJrAqMNXBZin1UQ1rucq', 'GURU_MAPEL');
+
+-- Insert classes
+INSERT INTO classes (id, name, level, "academicYear") VALUES
+('class-7a', 'Kelas 7A', 'SMP', '2024/2025'),
+('class-7b', 'Kelas 7B', 'SMP', '2024/2025'),
+('class-8a', 'Kelas 8A', 'SMP', '2024/2025'),
+('class-8b', 'Kelas 8B', 'SMP', '2024/2025'),
+('class-9a', 'Kelas 9A', 'SMP', '2024/2025'),
+('class-9b', 'Kelas 9B', 'SMP', '2024/2025'),
+('class-10a', 'Kelas 10A', 'MA', '2024/2025'),
+('class-10b', 'Kelas 10B', 'MA', '2024/2025'),
+('class-11a', 'Kelas 11A', 'MA', '2024/2025'),
+('class-11b', 'Kelas 11B', 'MA', '2024/2025'),
+('class-12a', 'Kelas 12A', 'MA', '2024/2025'),
+('class-12b', 'Kelas 12B', 'MA', '2024/2025');
+
+-- Update wali kelas
+UPDATE classes SET "waliKelasId" = 'user-sri' WHERE id = 'class-7a';
+UPDATE classes SET "waliKelasId" = 'user-dewi' WHERE id = 'class-8a';
+UPDATE classes SET "waliKelasId" = 'user-nur' WHERE id = 'class-9a';
+
+-- Insert subjects SMP
+INSERT INTO subjects (id, name, code, level) VALUES
+('sub-pai-smp', 'Pendidikan Agama Islam', 'PAI-SMP', 'SMP'),
+('sub-pkn-smp', 'Pendidikan Pancasila dan Kewarganegaraan', 'PKN-SMP', 'SMP'),
+('sub-bin-smp', 'Bahasa Indonesia', 'BIN-SMP', 'SMP'),
+('sub-mtk-smp', 'Matematika', 'MTK-SMP', 'SMP'),
+('sub-ipa-smp', 'Ilmu Pengetahuan Alam', 'IPA-SMP', 'SMP'),
+('sub-ips-smp', 'Ilmu Pengetahuan Sosial', 'IPS-SMP', 'SMP'),
+('sub-big-smp', 'Bahasa Inggris', 'BIG-SMP', 'SMP'),
+('sub-sbd-smp', 'Seni Budaya', 'SBD-SMP', 'SMP'),
+('sub-pjok-smp', 'Pendidikan Jasmani, Olahraga dan Kesehatan', 'PJOK-SMP', 'SMP'),
+('sub-prk-smp', 'Prakarya', 'PRK-SMP', 'SMP');
+
+-- Insert subjects MA
+INSERT INTO subjects (id, name, code, level) VALUES
+('sub-alquran-ma', 'Al-Quran Hadits', 'ALQ-MA', 'MA'),
+('sub-akidah-ma', 'Akidah Akhlak', 'AKD-MA', 'MA'),
+('sub-fiqih-ma', 'Fiqih', 'FIQ-MA', 'MA'),
+('sub-ski-ma', 'Sejarah Kebudayaan Islam', 'SKI-MA', 'MA'),
+('sub-pkn-ma', 'Pendidikan Pancasila dan Kewarganegaraan', 'PKN-MA', 'MA'),
+('sub-bin-ma', 'Bahasa Indonesia', 'BIN-MA', 'MA'),
+('sub-mtk-ma', 'Matematika', 'MTK-MA', 'MA'),
+('sub-ipa-ma', 'Ilmu Pengetahuan Alam', 'IPA-MA', 'MA'),
+('sub-ips-ma', 'Ilmu Pengetahuan Sosial', 'IPS-MA', 'MA'),
+('sub-big-ma', 'Bahasa Inggris', 'BIG-MA', 'MA'),
+('sub-bta-ma', 'Bahasa Tasawur Arab', 'BTA-MA', 'MA');
+
+-- Insert sample students (10 contoh)
+INSERT INTO students (id, name, nisn, "classId", gender) VALUES
+('std-001', 'Ahmad Rizki', '0012345678', 'class-7a', 'L'),
+('std-002', 'Siti Aisyah', '0012345679', 'class-7a', 'P'),
+('std-003', 'Budi Santoso', '0012345680', 'class-7a', 'L'),
+('std-004', 'Dewi Lestari', '0012345681', 'class-7a', 'P'),
+('std-005', 'Eko Prasetyo', '0012345682', 'class-7a', 'L'),
+('std-006', 'Fitri Handayani', '0012345683', 'class-7b', 'P'),
+('std-007', 'Gunawan Wibowo', '0012345684', 'class-7b', 'L'),
+('std-008', 'Hana Pertiwi', '0012345685', 'class-7b', 'P'),
+('std-009', 'Irfan Hakim', '0012345686', 'class-8a', 'L'),
+('std-010', 'Julia Maharani', '0012345687', 'class-8a', 'P');
+
+-- Insert teacher_subjects assignments (Budi mengajar beberapa mapel)
+INSERT INTO teacher_subjects (id, "userId", "subjectId", "classId") VALUES
+('ts-001', 'user-budi', 'sub-mtk-smp', 'class-7a'),
+('ts-002', 'user-budi', 'sub-mtk-smp', 'class-7b'),
+('ts-003', 'user-budi', 'sub-mtk-smp', 'class-8a'),
+('ts-004', 'user-ahmad', 'sub-ipa-smp', 'class-7a'),
+('ts-005', 'user-ahmad', 'sub-ipa-smp', 'class-8a'),
+('ts-006', 'user-hendra', 'sub-big-smp', 'class-7a'),
+('ts-007', 'user-hendra', 'sub-big-smp', 'class-7b'),
+('ts-008', 'user-eko', 'sub-pai-smp', 'class-7a'),
+('ts-009', 'user-eko', 'sub-pai-smp', 'class-8a');
+
+-- Insert sample grades
+INSERT INTO grades (id, "studentId", "subjectId", "tugas1", "tugas2", "ulangan1", "ulangan2", "midTest", "finalTest", "finalGrade", "academicYear", semester) VALUES
+('grade-001', 'std-001', 'sub-mtk-smp', 80, 85, 75, 80, 82, 78, 79.5, '2024/2025', 1),
+('grade-002', 'std-002', 'sub-mtk-smp', 90, 88, 85, 87, 90, 92, 89.8, '2024/2025', 1),
+('grade-003', 'std-001', 'sub-ipa-smp', 75, 80, 70, 75, 78, 80, 77.0, '2024/2025', 1),
+('grade-004', 'std-002', 'sub-ipa-smp', 85, 88, 82, 85, 88, 90, 87.2, '2024/2025', 1);
