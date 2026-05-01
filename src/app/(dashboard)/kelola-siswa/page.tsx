@@ -30,13 +30,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { 
-  Plus, 
-  Search, 
-  Download, 
-  Upload, 
+import {
+  Plus,
+  Search,
+  Download,
+  Upload,
   Loader2,
   Pencil,
+  Trash2,
   Users,
   FileSpreadsheet,
   AlertTriangle
@@ -84,6 +85,11 @@ export default function KelolaSiswaPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [mergeMode, setMergeMode] = useState(true);
   const [importing, setImporting] = useState(false);
+
+  // Delete state
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [studentToDelete, setStudentToDelete] = useState<Student | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -193,6 +199,35 @@ export default function KelolaSiswaPage() {
       toast.error('Gagal mengimpor data');
     } finally {
       setImporting(false);
+    }
+  };
+
+  const handleOpenDeleteDialog = (student: Student) => {
+    setStudentToDelete(student);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!studentToDelete) return;
+
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/students?id=${studentToDelete.id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success(data.message);
+        setDeleteDialogOpen(false);
+        setStudentToDelete(null);
+        fetchData();
+      } else {
+        toast.error(data.error);
+      }
+    } catch (error) {
+      toast.error('Gagal menghapus siswa');
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -316,6 +351,14 @@ export default function KelolaSiswaPage() {
                           onClick={() => handleOpenDialog(student)}
                         >
                           <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleOpenDeleteDialog(student)}
+                          className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                        >
+                          <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
                     </TableCell>
@@ -470,6 +513,63 @@ export default function KelolaSiswaPage() {
                 <>
                   <Upload className="w-4 h-4 mr-2" />
                   Import
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteDialogOpen} onOpenChange={(open) => {
+        if (!deleting) {
+          setDeleteDialogOpen(open);
+          if (!open) setStudentToDelete(null);
+        }
+      }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Hapus Siswa</DialogTitle>
+            <DialogDescription>
+              Apakah Anda yakin ingin menghapus siswa ini?
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            <div className="flex items-start gap-2 p-3 bg-red-50 rounded-lg text-red-700">
+              <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              <div className="text-sm">
+                <p className="font-medium">Peringatan</p>
+                <p>Semua nilai yang terkait dengan siswa <strong>{studentToDelete?.name}</strong> juga akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setDeleteDialogOpen(false);
+                setStudentToDelete(null);
+              }}
+              disabled={deleting}
+            >
+              Batal
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={deleting}
+            >
+              {deleting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Menghapus...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Hapus
                 </>
               )}
             </Button>

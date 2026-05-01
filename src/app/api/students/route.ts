@@ -91,13 +91,85 @@ export async function POST(request: NextRequest) {
       if (!error) count++;
     }
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       message: `${count} siswa berhasil diimpor`,
-      count 
+      count
     });
   } catch (error) {
     console.error('Import students error:', error);
+    return NextResponse.json(
+      { success: false, error: 'Terjadi kesalahan pada server' },
+      { status: 500 }
+    );
+  }
+}
+
+// Delete a student
+export async function DELETE(request: NextRequest) {
+  try {
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ success: false, error: 'Tidak terautentikasi' }, { status: 401 });
+    }
+
+    const decoded = verify(token, JWT_SECRET) as { userId: string; role: string };
+    if (decoded.role !== 'ADMIN') {
+      return NextResponse.json({ success: false, error: 'Tidak memiliki akses' }, { status: 403 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'ID siswa diperlukan' }, { status: 400 });
+    }
+
+    // Check if student exists
+    const { data: student, error: findError } = await supabase
+      .from('students')
+      .select('id, name')
+      .eq('id', id)
+      .single();
+
+    if (findError || !student) {
+      return NextResponse.json({ success: false, error: 'Siswa tidak ditemukan' }, { status: 404 });
+    }
+
+    // Delete related grades first (manual cascade for Supabase)
+    const { error: gradesDeleteError } = await supabase
+      .from('grades')
+      .delete()
+      .eq('studentId', id);
+
+    if (gradesDeleteError) {
+      console.error('Error deleting grades:', gradesDeleteError);
+      return NextResponse.json(
+        { success: false, error: 'Gagal menghapus nilai siswa' },
+        { status: 500 }
+      );
+    }
+
+    // Delete the student
+    const { error: deleteError } = await supabase
+      .from('students')
+      .delete()
+      .eq('id', id);
+
+    if (deleteError) {
+      console.error('Error deleting student:', deleteError);
+      return NextResponse.json(
+        { success: false, error: 'Gagal menghapus siswa' },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: `Siswa ${student.name} berhasil dihapus`
+    });
+  } catch (error) {
+    console.error('Delete student error:', error);
     return NextResponse.json(
       { success: false, error: 'Terjadi kesalahan pada server' },
       { status: 500 }
