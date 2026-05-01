@@ -147,9 +147,26 @@ export default function KelolaSiswaPage() {
 
     setSaving(true);
     try {
-      toast.success(editingId ? 'Data siswa diperbarui' : 'Siswa baru ditambahkan');
-      setDialogOpen(false);
-      fetchData();
+      const url = '/api/students';
+      const method = editingId ? 'PUT' : 'POST';
+      const body = editingId
+        ? { id: editingId, ...formData }
+        : formData;
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        toast.success(data.message);
+        setDialogOpen(false);
+        fetchData();
+      } else {
+        toast.error(data.error);
+      }
     } catch (error) {
       toast.error('Terjadi kesalahan');
     } finally {

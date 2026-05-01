@@ -208,9 +208,23 @@ export default function InputNilaiPage() {
   };
 
   const handleGradeChange = (studentId: string, field: keyof GradeData, value: string) => {
-    const numValue = value === '' ? null : parseFloat(value);
-    if (numValue !== null && (numValue < 0 || numValue > 100)) return;
-    
+    if (value === '') {
+      setGrades(prev => {
+        const updated = {
+          ...prev[studentId],
+          [field]: null,
+        };
+        updated.finalGrade = calculateFinalGrade(updated);
+        return { ...prev, [studentId]: updated };
+      });
+      return;
+    }
+
+    // Parse as float directly without rounding
+    const numValue = parseFloat(value);
+    if (isNaN(numValue)) return;
+    if (numValue < 0 || numValue > 100) return;
+
     setGrades(prev => {
       const updated = {
         ...prev[studentId],
@@ -522,6 +536,7 @@ export default function InputNilaiPage() {
                             type="number"
                             min="0"
                             max="100"
+                            step="0.01"
                             value={grade.tugas1 ?? ''}
                             onChange={(e) => handleGradeChange(student.id, 'tugas1', e.target.value)}
                             className="w-full h-9 text-center"
@@ -533,6 +548,7 @@ export default function InputNilaiPage() {
                             type="number"
                             min="0"
                             max="100"
+                            step="0.01"
                             value={grade.tugas2 ?? ''}
                             onChange={(e) => handleGradeChange(student.id, 'tugas2', e.target.value)}
                             className="w-full h-9 text-center"
@@ -544,6 +560,7 @@ export default function InputNilaiPage() {
                             type="number"
                             min="0"
                             max="100"
+                            step="0.01"
                             value={grade.ulangan1 ?? ''}
                             onChange={(e) => handleGradeChange(student.id, 'ulangan1', e.target.value)}
                             className="w-full h-9 text-center"
@@ -555,6 +572,7 @@ export default function InputNilaiPage() {
                             type="number"
                             min="0"
                             max="100"
+                            step="0.01"
                             value={grade.ulangan2 ?? ''}
                             onChange={(e) => handleGradeChange(student.id, 'ulangan2', e.target.value)}
                             className="w-full h-9 text-center"
@@ -566,6 +584,7 @@ export default function InputNilaiPage() {
                             type="number"
                             min="0"
                             max="100"
+                            step="0.01"
                             value={grade.midTest ?? ''}
                             onChange={(e) => handleGradeChange(student.id, 'midTest', e.target.value)}
                             className="w-full h-9 text-center"
@@ -577,6 +596,7 @@ export default function InputNilaiPage() {
                             type="number"
                             min="0"
                             max="100"
+                            step="0.01"
                             value={grade.uas ?? ''}
                             onChange={(e) => handleGradeChange(student.id, 'uas', e.target.value)}
                             className="w-full h-9 text-center"

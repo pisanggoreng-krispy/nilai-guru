@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// Import students from Excel
+// Import students from Excel or add single student
 export async function POST(request: NextRequest) {
   try {
     const token = request.cookies.get('auth-token')?.value;
@@ -58,6 +58,45 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
+
+    // Check if it's a single student add
+    if (body.nis && body.name && body.classId && !body.students) {
+      const { nis, name, classId, gender } = body;
+
+      // Check if NIS already exists
+      const { data: existing } = await supabase
+        .from('students')
+        .select('id')
+        .eq('nisn', String(nis))
+        .single();
+
+      if (existing) {
+        return NextResponse.json({ success: false, error: 'NIS sudah terdaftar' }, { status: 400 });
+      }
+
+      const id = generateId('std-');
+      const { data, error } = await supabase
+        .from('students')
+        .insert({
+          id,
+          name,
+          nisn: String(nis),
+          classId,
+          gender: gender || null,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return NextResponse.json({
+        success: true,
+        message: 'Siswa berhasil ditambahkan',
+        data
+      });
+    }
+
+    // Bulk import from Excel
     const { students } = body;
 
     if (!Array.isArray(students)) {
@@ -71,7 +110,7 @@ export async function POST(request: NextRequest) {
     let count = 0;
     for (const student of students) {
       const { nis, name, classId, gender } = student;
-      
+
       // Check if NISN already exists
       if (existingStudents?.some(s => s.nisn === String(nis))) {
         continue;
@@ -98,6 +137,79 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Import students error:', error);
+    return NextResponse.json(
+      { success: false, error: 'Terjadi kesalahan pada server' },
+      { status: 500 }
+    );
+  }
+}
+
+// Update a student
+export async function PUT(request: NextRequest) {
+  try {
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ success: false, error: 'Tidak terautentikasi' }, { status: 401 });
+    }
+
+    const decoded = verify(token, JWT_SECRET) as { userId: string; role: string };
+    if (decoded.role !== 'ADMIN') {
+      return NextResponse.json({ success: false, error: 'Tidak memiliki akses' }, { status: 403 });
+    }
+
+    const body = await request.json();
+    const { id, nis, name, classId, gender } = body;
+
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'ID siswa diperlukan' }, { status: 400 });
+    }
+
+    // Check if student exists
+    const { data: existing, error: findError } = await supabase
+      .from('students')
+      .select('id')
+      .eq('id', id)
+      .single();
+
+    if (findError || !existing) {
+      return NextResponse.json({ success: false, error: 'Siswa tidak ditemukan' }, { status: 404 });
+    }
+
+    // Check if NIS already exists (for different student)
+    const { data: duplicateNis } = await supabase
+      .from('students')
+      .select('id')
+      .eq('nisn', String(nis))
+      .neq('id', id)
+      .single();
+
+    if (duplicateNis) {
+      return NextResponse.json({ success: false, error: 'NIS sudah digunakan siswa lain' }, { status: 400 });
+    }
+
+    // Update student
+    const { data, error } = await supabase
+      .from('students')
+      .update({
+        name,
+        nisn: String(nis),
+        classId,
+        gender: gender || null,
+        updatedAt: new Date().toISOString(),
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return NextResponse.json({
+      success: true,
+      message: 'Data siswa berhasil diperbarui',
+      data
+    });
+  } catch (error) {
+    console.error('Update student error:', error);
     return NextResponse.json(
       { success: false, error: 'Terjadi kesalahan pada server' },
       { status: 500 }
